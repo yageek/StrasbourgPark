@@ -1,6 +1,8 @@
 package net.yageek.strasbourgpark.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +16,6 @@ import net.yageek.strasbourgparkapi.ParkingState;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -70,7 +71,7 @@ public class ParkingAdapter extends BaseAdapter {
 
             holder = new ViewHolder();
             holder.parkingName = inflatedView.findViewById(R.id.parking_name);
-            holder.parkingPrice = inflatedView.findViewById(R.id.parking_price);
+            holder.parkingState = inflatedView.findViewById(R.id.parking_state);
             holder.parkingFreePlaces = inflatedView.findViewById(R.id.parking_free_places);
             holder.availability = inflatedView.findViewById(R.id.parking_availability_slider);
 
@@ -82,10 +83,14 @@ public class ParkingAdapter extends BaseAdapter {
 
         ParkingResult result = results.get(i);
         holder.parkingName.setText(result.parking.name);
-        holder.parkingPrice.setText(result.parking.price_fr);
+
 
         if(result.state != null) {
             ParkingState state = result.state;
+
+            holder.parkingState.setTextColor(colorFromStatus(state.status));
+            holder.parkingState.setText(textFromStatus(state.status));
+
             int progress = (int) ((double) state.free / (double) state.total * 100.0);
 
             holder.availability.setIndeterminate(false);
@@ -103,7 +108,7 @@ public class ParkingAdapter extends BaseAdapter {
 
     public static class ViewHolder {
         TextView parkingName;
-        TextView parkingPrice;
+        TextView parkingState;
         TextView parkingFreePlaces;
         ProgressBar availability;
     }
@@ -128,5 +133,29 @@ public class ParkingAdapter extends BaseAdapter {
     public void clear() {
         this.results.clear();
         notifyDataSetChanged();
+    }
+
+    public int colorFromStatus(ParkingState.Status status) {
+
+        switch (status) {
+            case Full: return ContextCompat.getColor(context, R.color.colorParkingFull);
+            case Open: return ContextCompat.getColor(context, R.color.colorParkingOpen);
+            case Closed: return ContextCompat.getColor(context, R.color.colorParkingClosed);
+            default:
+            case NotAvailable: return ContextCompat.getColor(context, R.color.colorParkingNotAvailable);
+
+        }
+    }
+
+    public String textFromStatus(ParkingState.Status status) {
+
+        switch (status) {
+            case Full: return context.getResources().getString(R.string.parking_state_full);
+            case Open: return context.getResources().getString(R.string.parking_state_open);
+            case Closed: return context.getResources().getString(R.string.parking_state_closed);
+            default:
+            case NotAvailable: return context.getResources().getString(R.string.parking_state_notavailable);
+
+        }
     }
 }

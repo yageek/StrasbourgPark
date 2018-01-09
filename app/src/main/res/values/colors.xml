@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#11a95b</color>
+    <color name="colorPrimaryDark">#0c743f</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="colorParkingFull">#e61b1b</color>
+    <color name="colorParkingClosed">#e61b1b</color>
+    <color name="colorParkingOpen">#e61b1b</color>
+    <color name="colorParkingNotAvailable">#e61b1b</color>
 </resources>

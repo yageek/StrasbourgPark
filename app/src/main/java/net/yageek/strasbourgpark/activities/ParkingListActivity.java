@@ -166,4 +166,5 @@ public class ParkingListActivity extends AppCompatActivity {
         handler.postDelayed(runnable, 800);
     }
     //endregion
+
 }
