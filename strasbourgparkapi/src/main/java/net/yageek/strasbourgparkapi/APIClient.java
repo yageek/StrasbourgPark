@@ -18,7 +18,6 @@ import okhttp3.Response;
 public class APIClient {
     private Gson gson;
     private OkHttpClient client = new OkHttpClient();
-    private ExecutorService executor = Executors.newFixedThreadPool(2);
 
     public static final String LocationEndpoint = "http://carto.strasmap.eu/remote.amf.json/Parking.geometry";
     public static final String StatusEndpoint = "http://carto.strasmap.eu/remote.amf.json/Parking.status";
@@ -34,31 +33,23 @@ public class APIClient {
         gson = builder.create();
     }
 
-    private <T> Future<T> getRequest(final String url, final Type type) {
+    private <T> T getRequest(final String url, final Type type) throws IOException {
 
-        Future<T> future = executor.submit(new Callable<T>() {
-            @Override
-            public T call() throws IOException, NullPointerException {
-                Request request = new Request.Builder()
-                        .url(url)
-                        .build();
 
-                Response response = client.newCall(request).execute();
-                T result = gson.fromJson(response.body().charStream(), type);
-                if (result == null) {
-                    throw new NullPointerException();
-                }
-                return result;
-            }
-        });
-        return future;
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        return gson.fromJson(response.body().charStream(), type);
+
     }
 
-    public Future<ParkingLocationResponse> getParkingLocationResponseFuture() {
+    public ParkingLocationResponse getParkingLocationResponse() throws IOException  {
         return getRequest(LocationEndpoint, ParkingLocationResponse.class);
     }
 
-    public Future<ParkingStateResponse> getParkingStateResponseFuture() {
+    public ParkingStateResponse getParkingStateResponse() throws IOException   {
         return getRequest(StatusEndpoint, ParkingStateResponse.class);
     }
 }

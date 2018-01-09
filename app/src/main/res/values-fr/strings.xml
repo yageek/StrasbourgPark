@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">StrasbourgPark</string>
+    <string name="parking_state_full">Complet</string>
+    <string name="parking_state_closed">Fermé</string>
+    <string name="parking_state_open">Ouvert</string>
+    <string name="parking_state_notavailable">Statut indisponible</string>
+    <string name="fetching_data">Téléchargement</string>
 </resources>

@@ -21,6 +21,7 @@ import net.yageek.strasbourgparkapi.Parking;
 import net.yageek.strasbourgparkapi.ParkingLocationResponse;
 import net.yageek.strasbourgparkapi.ParkingStateResponse;
 
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -114,6 +115,7 @@ public class ParkingListActivity extends AppCompatActivity {
             listView.setVisibility(View.VISIBLE);
             loadingView.setVisibility(View.INVISIBLE);
         }
+        loadingView.setLoading(isLoading);
         invalidateOptionsMenu();
     }
 
@@ -124,15 +126,12 @@ public class ParkingListActivity extends AppCompatActivity {
        setLoading(true);
 
         // Network call
-        final Future<ParkingLocationResponse> locationFuture = client.getParkingLocationResponseFuture();
-        final Future<ParkingStateResponse> statesFuture = client.getParkingStateResponseFuture();
-
         executor.submit(new Runnable() {
             @Override
             public void run() {
                 try {
-                    final ParkingLocationResponse location = locationFuture.get();
-                    final ParkingStateResponse states = statesFuture.get();
+                    final  ParkingLocationResponse location = client.getParkingLocationResponse();
+                     final ParkingStateResponse states = client.getParkingStateResponse();
 
                     Log.d(TAG, "Download succeeded !");
                     runOnMainThread(new Runnable() {
@@ -144,13 +143,13 @@ public class ParkingListActivity extends AppCompatActivity {
                         }
                     });
 
-                } catch (Exception e) {
+                } catch (IOException e) {
                     Log.e(TAG, "Error failed: " + e.getCause());
 
                     runOnMainThread(new Runnable() {
                         @Override
                         public void run() {
-                            loadingView.setLoading(false);
+                            setLoading(false);
                             loadingView.setText("An error occurs :( Try again later.");
                         }
                     });
