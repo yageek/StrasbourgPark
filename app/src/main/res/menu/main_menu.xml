@@ -9,12 +9,13 @@
 
     <item android:id="@+id/filterby_name"
         android:title="Filter by name"
-        android:icon="@android:drawable/ic_menu_sort_alphabetically"
         />
 
     <item android:id="@+id/filterby_free_places"
         android:title="Filter by free place"
-        android:orderInCategory="100"
-        android:icon="@android:drawable/ic_menu_sort_by_size"
+        />
+
+    <item android:id="@+id/filterby_fillingrate"
+        android:title="Filter by filling rate"
         />
 </menu>

@@ -14,11 +14,14 @@ import android.widget.ProgressBar;
 
 import net.yageek.strasbourgpark.R;
 import net.yageek.strasbourgpark.adapters.ParkingAdapter;
+import net.yageek.strasbourgpark.adapters.ParkingResult;
 import net.yageek.strasbourgpark.views.LoadingView;
 import net.yageek.strasbourgparkapi.APIClient;
+import net.yageek.strasbourgparkapi.Parking;
 import net.yageek.strasbourgparkapi.ParkingLocationResponse;
 import net.yageek.strasbourgparkapi.ParkingStateResponse;
 
+import java.util.Comparator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -87,6 +90,14 @@ public class ParkingListActivity extends AppCompatActivity {
             case R.id.refresh_data:
                 downloadData();
                 return true;
+            case R.id.filterby_name:
+                adapter.setComparator(ParkingResult.Comparators.ByName);
+                return true;
+            case R.id.filterby_free_places:
+                adapter.setComparator(ParkingResult.Comparators.ByFreePlaces);
+                return true;
+            case R.id.filterby_fillingrate:
+                adapter.setComparator(ParkingResult.Comparators.ByFillingRate);
             default:
                 return super.onOptionsItemSelected(item);
         }

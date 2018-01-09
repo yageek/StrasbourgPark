@@ -13,7 +13,8 @@ import net.yageek.strasbourgparkapi.Parking;
 import net.yageek.strasbourgparkapi.ParkingState;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -22,16 +23,32 @@ import java.util.List;
 
 public class ParkingAdapter extends BaseAdapter {
     private final Context context;
-    private List<Parking> parkings = new ArrayList<>();
-    private HashMap<String, ParkingState> statesMap = new HashMap<>();
+    private ArrayList<ParkingResult> results = new ArrayList<>();
+
+    private ParkingResult.Comparators comparator = ParkingResult.Comparators.ByName;
 
     public ParkingAdapter(Context context) {
         this.context = context;
     }
 
+    public ParkingResult.Comparators getComparator() {
+        return comparator;
+    }
+
+    public void setComparator(ParkingResult.Comparators comparator) {
+        this.comparator = comparator;
+        Collections.sort(results, comparator.getComparator());
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean isEnabled(int position) {
+        return false;
+    }
+
     @Override
     public int getCount() {
-        return parkings.size();
+        return results.size();
     }
 
     @Override
@@ -63,12 +80,12 @@ public class ParkingAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        Parking parking = parkings.get(i);
-        holder.parkingName.setText(parking.name);
-        holder.parkingPrice.setText(parking.price_fr);
+        ParkingResult result = results.get(i);
+        holder.parkingName.setText(result.parking.name);
+        holder.parkingPrice.setText(result.parking.price_fr);
 
-        if(statesMap.containsKey(parking.identifier)) {
-            ParkingState state = statesMap.get(parking.identifier);
+        if(result.state != null) {
+            ParkingState state = result.state;
             int progress = (int) ((double) state.free / (double) state.total * 100.0);
 
             holder.availability.setIndeterminate(false);
@@ -92,19 +109,24 @@ public class ParkingAdapter extends BaseAdapter {
     }
 
     public void setParkings(List<Parking> parkings, List<ParkingState> states) {
-        this.parkings = parkings;
 
-        statesMap.clear();
-        for(ParkingState state: states) {
-            statesMap.put(state.parkingIdentifier, state);
+        ArrayList<ParkingResult> newResults = new ArrayList<>();
+
+        for(Parking parking: parkings) {
+            for(ParkingState state: states) {
+
+                if(parking.identifier.equals(state.parkingIdentifier)) {
+                    newResults.add(new ParkingResult(parking, state));
+                    break;
+                }
+            }
         }
+        this.results = newResults;
         notifyDataSetChanged();
     }
 
     public void clear() {
-        this.parkings.clear();
-        this.statesMap.clear();
-
+        this.results.clear();
         notifyDataSetChanged();
     }
 }
