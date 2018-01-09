@@ -5,6 +5,9 @@ import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -31,6 +34,9 @@ public class ParkingListActivity extends AppCompatActivity {
     private ListView listView;
     private LoadingView loadingView;
 
+    private boolean isDownloading = false;
+
+    //region Activity lifecycle
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,16 +52,65 @@ public class ParkingListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        downloadData();
+
+        if(adapter.getCount() < 1) {
+            downloadData();
+        }
+    }
+    //endregion
+
+    //region Menu management
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate main menu
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
     }
 
+    @Override
+    protected boolean onPrepareOptionsPanel(View view, Menu menu) {
+        MenuItem refreshData = menu.findItem(R.id.refresh_data);
+        if(isDownloading) {
+            refreshData.setEnabled(false);
+            refreshData.getIcon().setAlpha(50);
+        } else {
+            refreshData.setEnabled(true);
+            refreshData.getIcon().setAlpha(255);
+        }
+        return true;
+    }
 
-    void downloadData() {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.refresh_data:
+                downloadData();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    //endregion
+
+    private void setLoading(boolean isLoading) {
+
+        this.isDownloading = isLoading;
+        if(isLoading) {
+            listView.setVisibility(View.INVISIBLE);
+            loadingView.setVisibility(View.VISIBLE);
+        } else {
+            listView.setVisibility(View.VISIBLE);
+            loadingView.setVisibility(View.INVISIBLE);
+        }
+        invalidateOptionsMenu();
+    }
+
+    private void downloadData() {
 
         // Toggle visibility
-
-        listView.setVisibility(View.INVISIBLE);
-        loadingView.setVisibility(View.VISIBLE);
+       setLoading(true);
 
         // Network call
         final Future<ParkingLocationResponse> locationFuture = client.getParkingLocationResponseFuture();
@@ -70,12 +125,9 @@ public class ParkingListActivity extends AppCompatActivity {
                     runOnMainThreadAfterDelay(new Runnable() {
                         @Override
                         public void run() {
-
                             adapter.setParkings(location.parkings, states.states);
-                            adapter.notifyDataSetChanged();
+                            setLoading(false);
 
-                            listView.setVisibility(View.VISIBLE);
-                            loadingView.setVisibility(View.INVISIBLE);
                         }
                     }, 800);
 
@@ -95,6 +147,7 @@ public class ParkingListActivity extends AppCompatActivity {
         });
     }
 
+    //region UI Thread primitives
     private void runOnMainThread(Runnable runnable) {
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(runnable);
@@ -104,4 +157,6 @@ public class ParkingListActivity extends AppCompatActivity {
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(runnable, delay);
     }
+    //endregion
+
 }

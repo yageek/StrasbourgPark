@@ -1,7 +1,6 @@
 package net.yageek.strasbourgpark.adapters;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,10 +98,13 @@ public class ParkingAdapter extends BaseAdapter {
         for(ParkingState state: states) {
             statesMap.put(state.parkingIdentifier, state);
         }
+        notifyDataSetChanged();
     }
 
     public void clear() {
         this.parkings.clear();
         this.statesMap.clear();
+
+        notifyDataSetChanged();
     }
 }
