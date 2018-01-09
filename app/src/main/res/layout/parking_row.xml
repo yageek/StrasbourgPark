@@ -17,18 +17,23 @@
         android:text="Open"
         android:textSize="15dp"
         android:layout_marginTop="5dp"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="@dimen/row_left_margin"
         android:textStyle="bold"
         />
 
     <TextView
         android:id="@+id/parking_name"
 
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@id/parking_state"
+
+        android:layout_marginLeft="@dimen/row_left_margin"
+
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/parking_state"
         app:layout_constraintBottom_toTopOf="@id/parking_availability_slider"
+        app:layout_constraintRight_toLeftOf="@id/parking_free_places"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
 
         android:layout_marginTop="5dp"
         android:layout_marginBottom="15dp"
@@ -44,6 +49,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBaseline_toBaselineOf="@id/parking_name"
+        app:layout_constraintLeft_toRightOf="@id/parking_name"
         android:textSize="30dp"
         android:text="30"
         android:textColor="@android:color/black"
