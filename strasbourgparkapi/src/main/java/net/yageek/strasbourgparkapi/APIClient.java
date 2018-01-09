@@ -3,6 +3,7 @@ package net.yageek.strasbourgparkapi;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -37,7 +38,7 @@ public class APIClient {
 
         Future<T> future = executor.submit(new Callable<T>() {
             @Override
-            public T call() throws Exception {
+            public T call() throws IOException, NullPointerException {
                 Request request = new Request.Builder()
                         .url(url)
                         .build();

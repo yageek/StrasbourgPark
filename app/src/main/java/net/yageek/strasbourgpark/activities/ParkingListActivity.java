@@ -104,7 +104,6 @@ public class ParkingListActivity extends AppCompatActivity {
     }
 
     //endregion
-
     private void setLoading(boolean isLoading) {
 
         this.isDownloading = isLoading;
@@ -119,6 +118,7 @@ public class ParkingListActivity extends AppCompatActivity {
     }
 
     private void downloadData() {
+        Log.d(TAG, "Starting downloading data...");
 
         // Toggle visibility
        setLoading(true);
@@ -133,25 +133,27 @@ public class ParkingListActivity extends AppCompatActivity {
                 try {
                     final ParkingLocationResponse location = locationFuture.get();
                     final ParkingStateResponse states = statesFuture.get();
-                    runOnMainThreadAfterDelay(new Runnable() {
+
+                    Log.d(TAG, "Download succeeded !");
+                    runOnMainThread(new Runnable() {
                         @Override
                         public void run() {
                             adapter.setParkings(location.parkings, states.states);
                             setLoading(false);
 
                         }
-                    }, 800);
+                    });
 
                 } catch (Exception e) {
-                    Log.e(TAG, "Exception: " + e.getLocalizedMessage());
+                    Log.e(TAG, "Error failed: " + e.getCause());
 
-                    runOnMainThreadAfterDelay(new Runnable() {
+                    runOnMainThread(new Runnable() {
                         @Override
                         public void run() {
                             loadingView.setLoading(false);
                             loadingView.setText("An error occurs :( Try again later.");
                         }
-                    }, 800);
+                    });
 
                 }
             }
@@ -161,13 +163,7 @@ public class ParkingListActivity extends AppCompatActivity {
     //region UI Thread primitives
     private void runOnMainThread(Runnable runnable) {
         Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(runnable);
-    }
-
-    private void runOnMainThreadAfterDelay(Runnable runnable, long delay){
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(runnable, delay);
+        handler.postDelayed(runnable, 800);
     }
     //endregion
-
 }
