@@ -119,6 +119,12 @@ public class ParkingListActivity extends AppCompatActivity {
         invalidateOptionsMenu();
     }
 
+    private void setError(String string) {
+        listView.setVisibility(View.INVISIBLE);
+        loadingView.setVisibility(View.VISIBLE);
+        loadingView.setText(string);
+    }
+
     private void downloadData() {
         Log.d(TAG, "Starting downloading data...");
 
@@ -131,7 +137,7 @@ public class ParkingListActivity extends AppCompatActivity {
             public void run() {
                 try {
                     final  ParkingLocationResponse location = client.getParkingLocationResponse();
-                     final ParkingStateResponse states = client.getParkingStateResponse();
+                    final ParkingStateResponse states = client.getParkingStateResponse();
 
                     Log.d(TAG, "Download succeeded !");
                     runOnMainThread(new Runnable() {
@@ -144,13 +150,12 @@ public class ParkingListActivity extends AppCompatActivity {
                     });
 
                 } catch (IOException e) {
-                    Log.e(TAG, "Error failed: " + e.getCause());
+                    Log.e(TAG, "Error during download: " + e.getCause());
 
                     runOnMainThread(new Runnable() {
                         @Override
                         public void run() {
-                            setLoading(false);
-                            loadingView.setText("An error occurs :( Try again later.");
+                            setError("An error occurs :( Try again later.");
                         }
                     });
 

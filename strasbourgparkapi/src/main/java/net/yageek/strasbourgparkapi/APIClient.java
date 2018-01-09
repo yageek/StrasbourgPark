@@ -35,7 +35,6 @@ public class APIClient {
 
     private <T> T getRequest(final String url, final Type type) throws IOException {
 
-
         Request request = new Request.Builder()
                 .url(url)
                 .build();
