@@ -1,31 +1,30 @@
 package net.yageek.strasbourgpark.activities;
 
+import android.content.DialogInterface;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import net.yageek.strasbourgpark.R;
 import net.yageek.strasbourgpark.adapters.ParkingAdapter;
 import net.yageek.strasbourgpark.adapters.ParkingResult;
 import net.yageek.strasbourgpark.views.LoadingView;
 import net.yageek.strasbourgparkapi.APIClient;
-import net.yageek.strasbourgparkapi.Parking;
 import net.yageek.strasbourgparkapi.ParkingLocationResponse;
 import net.yageek.strasbourgparkapi.ParkingStateResponse;
 
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class ParkingListActivity extends AppCompatActivity {
 
@@ -37,6 +36,7 @@ public class ParkingListActivity extends AppCompatActivity {
     private ParkingAdapter adapter;
     private ListView listView;
     private LoadingView loadingView;
+    private TextView noItemTextView;
 
     private boolean isDownloading = false;
 
@@ -47,7 +47,8 @@ public class ParkingListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_parking_list);
 
         listView = findViewById(R.id.parking_list_view);
-        loadingView =  findViewById(R.id.loading_view);
+        loadingView = findViewById(R.id.loading_view);
+        noItemTextView = findViewById(R.id.parking_list_view_no_item);
 
         adapter = new ParkingAdapter(getApplicationContext());
         listView.setAdapter(adapter);
@@ -76,6 +77,7 @@ public class ParkingListActivity extends AppCompatActivity {
     protected boolean onPrepareOptionsPanel(View view, Menu menu) {
         MenuItem refreshData = menu.findItem(R.id.refresh_data);
         if(isDownloading) {
+
             refreshData.setEnabled(false);
             refreshData.getIcon().setAlpha(50);
         } else {
@@ -91,13 +93,13 @@ public class ParkingListActivity extends AppCompatActivity {
             case R.id.refresh_data:
                 downloadData();
                 return true;
-            case R.id.filterby_name:
+            case R.id.sortby_name:
                 adapter.setComparator(ParkingResult.Comparators.ByName);
                 return true;
-            case R.id.filterby_free_places:
+            case R.id.sortby_free_places:
                 adapter.setComparator(ParkingResult.Comparators.ByFreePlaces);
                 return true;
-            case R.id.filterby_fillingrate:
+            case R.id.sortby_fillingrate:
                 adapter.setComparator(ParkingResult.Comparators.ByFillingRate);
             default:
                 return super.onOptionsItemSelected(item);
@@ -111,18 +113,47 @@ public class ParkingListActivity extends AppCompatActivity {
         if(isLoading) {
             listView.setVisibility(View.INVISIBLE);
             loadingView.setVisibility(View.VISIBLE);
+            noItemTextView.setVisibility(View.INVISIBLE);
         } else {
             listView.setVisibility(View.VISIBLE);
             loadingView.setVisibility(View.INVISIBLE);
+
+            if(adapter.getCount() < 1) {
+                noItemTextView.setVisibility(View.VISIBLE);
+            } else {
+                noItemTextView.setVisibility(View.INVISIBLE);
+            }
         }
-        loadingView.setLoading(isLoading);
         invalidateOptionsMenu();
     }
 
-    private void setError(String string) {
-        listView.setVisibility(View.INVISIBLE);
-        loadingView.setVisibility(View.VISIBLE);
-        loadingView.setText(string);
+    private void showError() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.error_message);
+        builder.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                downloadData();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                setLoading(false);
+            }
+        });
+
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                setLoading(false);
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void downloadData() {
@@ -144,7 +175,7 @@ public class ParkingListActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             adapter.setParkings(location.parkings, states.states);
-                            setLoading(false);
+                        setLoading(false);
 
                         }
                     });
@@ -155,14 +186,14 @@ public class ParkingListActivity extends AppCompatActivity {
                     runOnMainThread(new Runnable() {
                         @Override
                         public void run() {
-                            setError("An error occurs :( Try again later.");
+                            showError();
                         }
                     });
-
                 }
             }
         });
     }
+
 
     //region UI Thread primitives
     private void runOnMainThread(Runnable runnable) {

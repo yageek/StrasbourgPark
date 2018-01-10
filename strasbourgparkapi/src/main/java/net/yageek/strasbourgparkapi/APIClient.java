@@ -9,6 +9,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 
 import okhttp3.OkHttpClient;
@@ -17,12 +18,17 @@ import okhttp3.Response;
 
 public class APIClient {
     private Gson gson;
-    private OkHttpClient client = new OkHttpClient();
+    private OkHttpClient client;
 
     public static final String LocationEndpoint = "http://carto.strasmap.eu/remote.amf.json/Parking.geometry";
     public static final String StatusEndpoint = "http://carto.strasmap.eu/remote.amf.json/Parking.status";
 
     public APIClient() {
+
+        client = new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+        .build();
 
         // JSON builder
         GsonBuilder builder = new GsonBuilder();

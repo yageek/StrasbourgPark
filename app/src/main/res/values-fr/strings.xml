@@ -6,4 +6,9 @@
     <string name="parking_state_open">Ouvert</string>
     <string name="parking_state_notavailable">Statut indisponible</string>
     <string name="fetching_data">Téléchargement</string>
+    <string name="error_message">Le serveur est injoignable</string>
+    <string name="no_data_available">Aucune donnée disponible</string>
+    <string name="sortby_name">Trier par nom</string>
+    <string name="sortby_free_places">Trier par nombre de places disponibles</string>
+    <string name="sortby_filling_rate">Trier par taux de remplissage</string>
 </resources>

@@ -42,17 +42,4 @@ public class LoadingView extends RelativeLayout {
         progressBar = findViewById(R.id.loading_view_progressbar);
         textView = findViewById(R.id.loading_view_text);
     }
-
-    public void setLoading(boolean loading) {
-
-        if(loading) {
-            progressBar.setVisibility(VISIBLE);
-        } else {
-            progressBar.setVisibility(GONE);
-        }
-    }
-
-    public void setText(CharSequence text) {
-        textView.setText(text);
-    }
 }
