@@ -24,6 +24,7 @@ public class APIClient {
         client = new OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)
+                .cache(null)
         .build();
 
         // JSON builder
