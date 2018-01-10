@@ -1,1 +1,1 @@
-include ':app', ':strasbourgparkapi'
+include ':app'

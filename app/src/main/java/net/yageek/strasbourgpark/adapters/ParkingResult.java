@@ -1,7 +1,7 @@
 package net.yageek.strasbourgpark.adapters;
 
-import net.yageek.strasbourgparkapi.Parking;
-import net.yageek.strasbourgparkapi.ParkingState;
+import net.yageek.strasbourgpark.api.Parking;
+import net.yageek.strasbourgpark.api.ParkingState;
 
 import java.util.Comparator;
 

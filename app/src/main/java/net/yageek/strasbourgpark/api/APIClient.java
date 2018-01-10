@@ -1,14 +1,10 @@
-package net.yageek.strasbourgparkapi;
+package net.yageek.strasbourgpark.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 

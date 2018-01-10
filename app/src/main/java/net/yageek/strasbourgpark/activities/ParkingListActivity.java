@@ -18,9 +18,9 @@ import net.yageek.strasbourgpark.R;
 import net.yageek.strasbourgpark.adapters.ParkingAdapter;
 import net.yageek.strasbourgpark.adapters.ParkingResult;
 import net.yageek.strasbourgpark.views.LoadingView;
-import net.yageek.strasbourgparkapi.APIClient;
-import net.yageek.strasbourgparkapi.ParkingLocationResponse;
-import net.yageek.strasbourgparkapi.ParkingStateResponse;
+import net.yageek.strasbourgpark.api.APIClient;
+import net.yageek.strasbourgpark.api.ParkingLocationResponse;
+import net.yageek.strasbourgpark.api.ParkingStateResponse;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;

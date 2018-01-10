@@ -1,7 +1,6 @@
 package net.yageek.strasbourgpark.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +10,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import net.yageek.strasbourgpark.R;
-import net.yageek.strasbourgparkapi.Parking;
-import net.yageek.strasbourgparkapi.ParkingState;
+import net.yageek.strasbourgpark.api.Parking;
+import net.yageek.strasbourgpark.api.ParkingState;
 
 import java.util.ArrayList;
 import java.util.Collections;
