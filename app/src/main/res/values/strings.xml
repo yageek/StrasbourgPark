@@ -10,4 +10,5 @@
     <string name="sortby_name">Sort by name</string>
     <string name="sortby_free_places">Sort by free places</string>
     <string name="sortby_filling_rate">Sort by filling rate</string>
+
 </resources>

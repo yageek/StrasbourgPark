@@ -37,6 +37,7 @@ public class ParkingListActivity extends AppCompatActivity {
     private ListView listView;
     private LoadingView loadingView;
     private TextView noItemTextView;
+    private TextView lastRefreshText;
 
     private boolean isDownloading = false;
 
@@ -49,6 +50,7 @@ public class ParkingListActivity extends AppCompatActivity {
         listView = findViewById(R.id.parking_list_view);
         loadingView = findViewById(R.id.loading_view);
         noItemTextView = findViewById(R.id.parking_list_view_no_item);
+        lastRefreshText = findViewById(R.id.parking_last_refresh_text);
 
         adapter = new ParkingAdapter(getApplicationContext());
         listView.setAdapter(adapter);
@@ -58,9 +60,7 @@ public class ParkingListActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if(adapter.getCount() < 1) {
-            downloadData();
-        }
+        updateUI();
     }
     //endregion
 
@@ -114,15 +114,11 @@ public class ParkingListActivity extends AppCompatActivity {
             listView.setVisibility(View.INVISIBLE);
             loadingView.setVisibility(View.VISIBLE);
             noItemTextView.setVisibility(View.INVISIBLE);
+            lastRefreshText.setVisibility(View.GONE);
         } else {
             listView.setVisibility(View.VISIBLE);
             loadingView.setVisibility(View.INVISIBLE);
-
-            if(adapter.getCount() < 1) {
-                noItemTextView.setVisibility(View.VISIBLE);
-            } else {
-                noItemTextView.setVisibility(View.INVISIBLE);
-            }
+            updateContents();
         }
         invalidateOptionsMenu();
     }
@@ -131,14 +127,14 @@ public class ParkingListActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.error_message);
-        builder.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 downloadData();
             }
         });
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 setLoading(false);
@@ -174,8 +170,8 @@ public class ParkingListActivity extends AppCompatActivity {
                     runOnMainThread(new Runnable() {
                         @Override
                         public void run() {
-                            adapter.setParkings(location.parkings, states.states);
-                        setLoading(false);
+                            updateContents(location, states);
+                            setLoading(false);
 
                         }
                     });
@@ -192,6 +188,31 @@ public class ParkingListActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+
+    private void updateContents(ParkingLocationResponse locationResponse, ParkingStateResponse parkingStateResponse) {
+        adapter.setParkings(locationResponse.parkings, parkingStateResponse.states);
+        lastRefreshText.setText(parkingStateResponse.dataTime);
+        updateContents();
+    }
+
+    private void updateContents() {
+
+        if(adapter.getCount() < 1) {
+            noItemTextView.setVisibility(View.VISIBLE);
+            lastRefreshText.setVisibility(View.GONE);
+        } else {
+            noItemTextView.setVisibility(View.INVISIBLE);
+            lastRefreshText.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void updateUI() {
+
+        if(adapter.getCount() < 1) {
+            downloadData();
+        }
     }
 
 
