@@ -9,5 +9,6 @@
     <color name="colorParkingOpen">#71c700</color>
     <color name="colorParkingNotAvailable">#646464</color>
     <color name="colorLastRefreshText">#fff</color>
+    <color name="colorTabItemText">#fff</color>
     <color name="colorLastRefreshTextBackground">#71c700</color>
 </resources>

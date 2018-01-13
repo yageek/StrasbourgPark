@@ -11,4 +11,7 @@
     <string name="sortby_name">Trier par nom</string>
     <string name="sortby_free_places">Trier par nombre de places disponibles</string>
     <string name="sortby_filling_rate">Trier par taux de remplissage</string>
+    <string name="retry">Réessayer</string>
+    <string name="list">Liste</string>
+    <string name="map">Carte</string>
 </resources>

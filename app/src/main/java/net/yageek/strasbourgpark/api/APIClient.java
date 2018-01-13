@@ -12,7 +12,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class APIClient {
+public class APIClient implements Webservice {
     private Gson gson;
     private OkHttpClient client;
 
@@ -24,6 +24,7 @@ public class APIClient {
         client = new OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
                 .cache(null)
         .build();
 

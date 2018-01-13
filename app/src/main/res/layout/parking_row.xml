@@ -42,8 +42,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="15dp"
 
-        android:text="Parking Name wih a v vew w ev vwe vwe vwe vwe vwe vwe v we vwe vwe vwe vwe vwe vwe v ew vwev wevwe vwe
-vwevwevweevwwvevwev vwev wev ev vwe v wevwe v wev wevwe vwe v we"
+        android:text="Parking Name"
         android:textColor="@android:color/black"
         android:textSize="20dp"/>
 
