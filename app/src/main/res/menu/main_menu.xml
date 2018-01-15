@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/refresh_data"
         app:showAsAction="always"
         android:title="Refresh data"
         android:icon="@drawable/ic_refresh_white_24dp"/>
-
-    <item android:id="@+id/sortby_name"
-        android:title="@string/sortby_name"
-        />
-
-    <item android:id="@+id/sortby_free_places"
-        android:title="@string/sortby_free_places"
-        />
-
-    <item android:id="@+id/sortby_fillingrate"
-        android:title="@string/sortby_filling_rate"
-        />
 </menu>

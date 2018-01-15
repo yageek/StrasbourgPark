@@ -10,10 +10,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import net.yageek.strasbourgpark.R;
-import net.yageek.strasbourgpark.api.Parking;
 import net.yageek.strasbourgpark.api.ParkingState;
+import net.yageek.strasbourgpark.repository.ParkingRepository;
+import net.yageek.strasbourgpark.utils.ParkingStatusUtils;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,19 +23,19 @@ import java.util.List;
 
 public class ParkingAdapter extends BaseAdapter {
     private final Context context;
-    private ArrayList<ParkingResult> results = new ArrayList<>();
+    private List<ParkingRepository.ParkingResult> results;
 
-    private ParkingResult.Comparators comparator = ParkingResult.Comparators.ByName;
+    private ParkingRepository.ParkingResult.Comparators comparator = ParkingRepository.ParkingResult.Comparators.ByName;
 
     public ParkingAdapter(Context context) {
         this.context = context;
     }
 
-    public ParkingResult.Comparators getComparator() {
+    public ParkingRepository.ParkingResult.Comparators getComparator() {
         return comparator;
     }
 
-    public void setComparator(ParkingResult.Comparators comparator) {
+    public void setComparator(ParkingRepository.ParkingResult.Comparators comparator) {
         this.comparator = comparator;
         Collections.sort(results, comparator.getComparator());
         notifyDataSetChanged();
@@ -48,7 +48,7 @@ public class ParkingAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return results.size();
+        return results == null ? 0 : results.size();
     }
 
     @Override
@@ -80,15 +80,15 @@ public class ParkingAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        ParkingResult result = results.get(i);
+        ParkingRepository.ParkingResult result = results.get(i);
         holder.parkingName.setText(result.parking.name);
 
 
         if(result.state != null) {
             ParkingState state = result.state;
 
-            holder.parkingState.setTextColor(colorFromStatus(state.status));
-            holder.parkingState.setText(textFromStatus(state.status));
+            holder.parkingState.setTextColor(ParkingStatusUtils.colorFromStatus(context, state.status));
+            holder.parkingState.setText(ParkingStatusUtils.textFromStatus(context, state.status));
 
             int progress = (int) ((double) state.free / (double) state.total * 100.0);
 
@@ -112,49 +112,13 @@ public class ParkingAdapter extends BaseAdapter {
         ProgressBar availability;
     }
 
-    public void setParkings(List<Parking> parkings, List<ParkingState> states) {
-
-        ArrayList<ParkingResult> newResults = new ArrayList<>();
-
-        for(Parking parking: parkings) {
-            for(ParkingState state: states) {
-
-                if(parking.identifier.equals(state.parkingIdentifier)) {
-                    newResults.add(new ParkingResult(parking, state));
-                    break;
-                }
-            }
-        }
-        this.results = newResults;
+    public void setResults(List<ParkingRepository.ParkingResult> results) {
+        this.results = results;
         notifyDataSetChanged();
     }
 
     public void clear() {
         this.results.clear();
         notifyDataSetChanged();
-    }
-
-    public int colorFromStatus(ParkingState.Status status) {
-
-        switch (status) {
-            case Full: return ContextCompat.getColor(context, R.color.colorParkingFull);
-            case Open: return ContextCompat.getColor(context, R.color.colorParkingOpen);
-            case Closed: return ContextCompat.getColor(context, R.color.colorParkingClosed);
-            default:
-            case NotAvailable: return ContextCompat.getColor(context, R.color.colorParkingNotAvailable);
-
-        }
-    }
-
-    public String textFromStatus(ParkingState.Status status) {
-
-        switch (status) {
-            case Full: return context.getResources().getString(R.string.parking_state_full);
-            case Open: return context.getResources().getString(R.string.parking_state_open);
-            case Closed: return context.getResources().getString(R.string.parking_state_closed);
-            default:
-            case NotAvailable: return context.getResources().getString(R.string.parking_state_notavailable);
-
-        }
     }
 }
