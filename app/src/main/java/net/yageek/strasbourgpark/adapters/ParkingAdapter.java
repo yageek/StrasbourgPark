@@ -71,4 +71,6 @@ public class ParkingAdapter extends ParkingBaseAdapter<ParkingAdapter.ViewHolder
         }
     }
 
+
+
 }

@@ -4,9 +4,12 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -50,8 +53,9 @@ public class ParkingListFragment extends Fragment {
         noItemTextView = rootView.findViewById(R.id.parking_list_view_no_item);
         lastRefreshText = rootView.findViewById(R.id.parking_last_refresh_text);
 
-        adapter = new ParkingAdapter(getActivity().getBaseContext());
+        adapter = new ParkingAdapter(getActivity());
         recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         setHasOptionsMenu(true);
 
@@ -61,23 +65,41 @@ public class ParkingListFragment extends Fragment {
 
         parkingModel.getDownloadStatus().observe(this, new Observer<DownloadResult>() {
             @Override
-            public void onChanged(@Nullable DownloadResult downloadResult) {
+            public void onChanged(@Nullable final DownloadResult downloadResult) {
                 switch(downloadResult.status) {
                     case Error:
-                        showError();
+
+                        uiRefreshDelay(new Runnable() {
+                            @Override
+                            public void run() {
+                                showError();
+                            }
+                        });
+
                         break;
                     case Loading:
                         setLoading(true);
                         break;
                     case Success:
-                        adapter.setResults(downloadResult.results);
-                        lastRefreshText.setText(downloadResult.lastRefreshTime);
-                        setLoading(false);
+                        uiRefreshDelay(new Runnable() {
+                            @Override
+                            public void run() {
+                                adapter.setResults(downloadResult.results);
+                                lastRefreshText.setText(downloadResult.lastRefreshTime);
+                                setLoading(false);
+                            }
+                        });
                         break;
                 }
             }
         });
         return rootView;
+    }
+
+    private void uiRefreshDelay(Runnable r) {
+
+        Handler handler = new Handler(Looper.myLooper());
+        handler.postDelayed(r, 800);
     }
 
     @Override
