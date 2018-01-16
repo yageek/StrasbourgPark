@@ -1,6 +1,6 @@
 package net.yageek.strasbourgpark.vo;
 
-import net.yageek.strasbourgpark.repository.ParkingRepository;
+import net.yageek.strasbourgparkapi.ParkingResult;
 
 import java.util.List;
 
@@ -18,11 +18,11 @@ public class DownloadResult {
 
     public final Status status;
 
-    public final List<ParkingRepository.ParkingResult> results;
+    public final List<ParkingResult> results;
     public final String lastRefreshTime;
     public final Throwable t;
 
-    DownloadResult(Status status, List<ParkingRepository.ParkingResult> results, String lastRefreshTime, Throwable t) {
+    DownloadResult(Status status, List<ParkingResult> results, String lastRefreshTime, Throwable t) {
         this.status = status;
         this.results = results;
         this.lastRefreshTime = lastRefreshTime;
@@ -38,7 +38,7 @@ public class DownloadResult {
         return new DownloadResult(Status.Loading, null, null, null);
     }
 
-    public static DownloadResult success(List<ParkingRepository.ParkingResult> resuls, String lastRefreshTime) {
+    public static DownloadResult success(List<ParkingResult> resuls, String lastRefreshTime) {
         return new DownloadResult(Status.Success, resuls, lastRefreshTime, null);
     }
 }

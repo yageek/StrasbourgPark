@@ -4,9 +4,10 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import net.yageek.strasbourgpark.api.APIClient;
-import net.yageek.strasbourgpark.repository.ParkingRepository;
+import net.yageek.strasbourgparkapi.ParkingResult;
+import net.yageek.strasbourgparkapi.repository.ParkingRepository;
 import net.yageek.strasbourgpark.vo.DownloadResult;
+import net.yageek.strasbourgparkapi.APIClient;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class ParkingModel extends ViewModel {
         downloadStatus.setValue(DownloadResult.loading());
         repository.getParkingResults(new ParkingRepository.Callback() {
             @Override
-            public void onResponse(List<ParkingRepository.ParkingResult> result, String lastRefresh) {
+            public void onResponse(List<ParkingResult> result, String lastRefresh) {
                 downloadStatus.setValue(DownloadResult.success(result, lastRefresh));
 
             }

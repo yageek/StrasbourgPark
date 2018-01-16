@@ -20,12 +20,12 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
 
-import net.yageek.strasbourgpark.api.Parking;
-import net.yageek.strasbourgpark.api.ParkingState;
-import net.yageek.strasbourgpark.repository.ParkingRepository;
+import net.yageek.strasbourgparkapi.ParkingResult;
 import net.yageek.strasbourgpark.utils.ParkingStatusUtils;
 import net.yageek.strasbourgpark.viewmodel.ParkingModel;
 import net.yageek.strasbourgpark.vo.DownloadResult;
+import net.yageek.strasbourgparkapi.Parking;
+import net.yageek.strasbourgparkapi.ParkingState;
 
 /**
  * Created by yheinrich on 14.01.18.
@@ -71,7 +71,7 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
             generator.setStyle(IconGenerator.STYLE_ORANGE);
 
             map.clear();
-            for(ParkingRepository.ParkingResult result : downloadResult.results) {
+            for(ParkingResult result : downloadResult.results) {
 
                 Parking parking = result.parking;
                 ParkingState state = result.state;

@@ -2,32 +2,26 @@ package net.yageek.strasbourgpark.fragments;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.support.v4.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import net.yageek.strasbourgpark.repository.ParkingRepository;
-import net.yageek.strasbourgpark.viewmodel.ParkingModel;
 import net.yageek.strasbourgpark.R;
 import net.yageek.strasbourgpark.adapters.ParkingAdapter;
-import net.yageek.strasbourgpark.api.APIClient;
+import net.yageek.strasbourgparkapi.ParkingResult;
+import net.yageek.strasbourgpark.viewmodel.ParkingModel;
 import net.yageek.strasbourgpark.views.LoadingView;
 import net.yageek.strasbourgpark.vo.DownloadResult;
-
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Created by yheinrich on 13.01.18.
@@ -38,7 +32,7 @@ public class ParkingListFragment extends Fragment {
     public static final String TAG = "ParkingList";
 
     private ParkingAdapter adapter;
-    private ListView listView;
+    private RecyclerView recyclerView;
     private LoadingView loadingView;
     private TextView noItemTextView;
     private TextView lastRefreshText;
@@ -51,13 +45,13 @@ public class ParkingListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.parking_list_fragment, container, false);
 
-        listView = rootView.findViewById(R.id.parking_list_view);
+        recyclerView = rootView.findViewById(R.id.parking_list_view);
         loadingView = rootView.findViewById(R.id.loading_view);
         noItemTextView = rootView.findViewById(R.id.parking_list_view_no_item);
         lastRefreshText = rootView.findViewById(R.id.parking_last_refresh_text);
 
         adapter = new ParkingAdapter(getActivity().getBaseContext());
-        listView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
 
         setHasOptionsMenu(true);
 
@@ -122,13 +116,13 @@ public class ParkingListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sortby_name:
-                adapter.setComparator(ParkingRepository.ParkingResult.Comparators.ByName);
+                adapter.setComparator(ParkingResult.Comparators.ByName);
                 return true;
             case R.id.sortby_free_places:
-                adapter.setComparator(ParkingRepository.ParkingResult.Comparators.ByFreePlaces);
+                adapter.setComparator(ParkingResult.Comparators.ByFreePlaces);
                 return true;
             case R.id.sortby_fillingrate:
-                adapter.setComparator(ParkingRepository.ParkingResult.Comparators.ByFillingRate);
+                adapter.setComparator(ParkingResult.Comparators.ByFillingRate);
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -138,12 +132,12 @@ public class ParkingListFragment extends Fragment {
     private void setLoading(boolean isLoading) {
 
         if(isLoading) {
-            listView.setVisibility(View.INVISIBLE);
+            recyclerView.setVisibility(View.INVISIBLE);
             loadingView.setVisibility(View.VISIBLE);
             noItemTextView.setVisibility(View.INVISIBLE);
             lastRefreshText.setVisibility(View.GONE);
         } else {
-            listView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
             loadingView.setVisibility(View.INVISIBLE);
             updateContents();
         }
@@ -181,7 +175,7 @@ public class ParkingListFragment extends Fragment {
 
     private void updateContents() {
 
-        if(adapter.getCount() < 1) {
+        if(adapter.getItemCount() < 1) {
             noItemTextView.setVisibility(View.VISIBLE);
             lastRefreshText.setVisibility(View.GONE);
         } else {
