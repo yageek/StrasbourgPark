@@ -1,10 +1,16 @@
 package net.yageek.strasbourgpark.fragments;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,9 +45,10 @@ import java.util.Map;
 
 public class ParkingMapFragment extends SupportMapFragment implements OnMapReadyCallback, Observer<DownloadResult> {
 
+    private final static int LOCATION_REQUEST = 0;
+
     private static final LatLng StrasbourgCenter = new LatLng( 48.5734053,7.7521113);
     private GoogleMap map;
-    private UiSettings uiSettings;
 
     private ParkingModel parkingModel;
     private Map<String, Marker> markerMap = new HashMap<>();
@@ -78,17 +85,57 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
 
     //endregion
 
+
+    //region permissions
+    private void tryEnablingLocation() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            if(ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+                // TODO: Location
+
+            } else {
+                String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
+                ActivityCompat.requestPermissions(getActivity(), permissions, LOCATION_REQUEST);
+            }
+        } else {
+            map.setMyLocationEnabled(true);
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == LOCATION_REQUEST && grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            map.setMyLocationEnabled(true);
+        }
+    }
+
+    //endregion
+
     //region OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
 
-        uiSettings = map.getUiSettings();
+        UiSettings uiSettings = map.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
 
         // Add a marker in Sydney, Australia, and move the camera.
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(ParkingMapFragment.StrasbourgCenter, 12));
         parkingModel.getDownloadStatus().observe(this, this);
+
+        tryEnablingLocation();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(map != null && !map.isMyLocationEnabled()) {
+            tryEnablingLocation();
+        }
     }
 
     @Override
