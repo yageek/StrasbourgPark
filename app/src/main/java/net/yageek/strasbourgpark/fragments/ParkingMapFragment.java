@@ -22,6 +22,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
@@ -126,9 +127,20 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(ParkingMapFragment.StrasbourgCenter, 12));
         parkingModel.getDownloadStatus().observe(this, this);
 
+
+        // Bounds
         tryEnablingLocation();
     }
 
+//    static LatLngBounds StrasbourBounds() {
+//        LatLngBounds bounds = LatLngBounds.builder()
+//                .include(new LatLng())
+//                .include(new LatLng())
+//                .include(new LatLng())
+//                .include(new LatLng())
+//
+//                return bounds;
+//    }
     @Override
     public void onResume() {
         super.onResume();
@@ -144,7 +156,6 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
         if (downloadResult.status == DownloadResult.Status.Success) {
 
             IconGenerator generator = new IconGenerator(getActivity());
-            generator.setStyle(IconGenerator.STYLE_ORANGE);
 
             map.clear();
             markerMap.clear();
