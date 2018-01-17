@@ -1,9 +1,11 @@
 package net.yageek.strasbourgpark.adapters;
 
 import android.content.Context;
+import android.nfc.Tag;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -19,22 +21,33 @@ import net.yageek.strasbourgparkapi.adapters.ParkingBaseAdapter;
  * Created by yheinrich on 08.01.18.
  */
 
-public class ParkingAdapter extends ParkingBaseAdapter<ParkingAdapter.ViewHolder> implements View.OnClickListener {
+public class ParkingAdapter extends ParkingBaseAdapter<ParkingAdapter.ViewHolder> {
 
-    public interface Listener {
-        void resultSelected(ParkingResult result);
+    public interface OnParkingResultSelected {
+        void onParkingResultSelected(ParkingResult result);
     }
+
     public final String TAG = "ParkingAdapter";
+    private OnParkingResultSelected listener;
+
+    private ViewHolder.OnPositionSelectedListener holderListener = new ViewHolder.OnPositionSelectedListener() {
+        @Override
+        public void holderSelected(int position) {
+            if(listener != null) {
+                listener.onParkingResultSelected(getResults().get(position));
+            }
+        }
+    };
 
     public ParkingAdapter(Context context) {
+
         super(context);
     }
 
-    public void setListener(Listener listener) {
+    public void setListener(OnParkingResultSelected listener) {
         this.listener = listener;
     }
 
-    private Listener listener;
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View inflatedView = LayoutInflater.from(getContext()).inflate(R.layout.parking_row, parent,false );
@@ -44,7 +57,6 @@ public class ParkingAdapter extends ParkingBaseAdapter<ParkingAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ParkingResult result = getResults().get(position);
-
         holder.parkingName.setText(result.parking.name);
 
         if(result.state != null) {
@@ -65,26 +77,21 @@ public class ParkingAdapter extends ParkingBaseAdapter<ParkingAdapter.ViewHolder
             holder.availability.setIndeterminate(true);
         }
 
-        holder.itemView.setTag(position);
-        holder.itemView.setOnClickListener(this);
+        holder.setListener(holderListener);
+
     }
 
-    @Override
-    public void onClick(View v) {
-        Log.d(TAG, "Click on item " + v.getTag());
-
-        if(listener != null) {
-            int index = (int) v.getTag();
-            listener.resultSelected(getResults().get(index));
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public interface OnPositionSelectedListener {
+            void holderSelected(int position);
         }
-    }
 
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView parkingName;
         TextView parkingState;
         TextView parkingFreePlaces;
         ProgressBar availability;
+
+        private OnPositionSelectedListener listener;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -93,6 +100,21 @@ public class ParkingAdapter extends ParkingBaseAdapter<ParkingAdapter.ViewHolder
             parkingState = itemView.findViewById(R.id.parking_state);
             parkingFreePlaces = itemView.findViewById(R.id.parking_free_places);
             availability = itemView.findViewById(R.id.parking_availability_slider);
+
+            itemView.setOnClickListener(this);
+        }
+
+        public void setListener(OnPositionSelectedListener listener) {
+            this.listener = listener;
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            if(listener != null) {
+                listener.holderSelected(getAdapterPosition());
+            }
         }
     }
+
 }

@@ -21,7 +21,7 @@ import net.yageek.strasbourgpark.viewmodel.ParkingModel;
 import net.yageek.strasbourgpark.vo.DownloadResult;
 import net.yageek.strasbourgparkapi.ParkingResult;
 
-public class ParkingListActivity extends AppCompatActivity implements ParkingAdapter.Listener {
+public class ParkingListActivity extends AppCompatActivity implements ParkingAdapter.OnParkingResultSelected {
 
     private static final String TAG = "Main activity";
     private ViewPager viewPager;
@@ -49,12 +49,12 @@ public class ParkingListActivity extends AppCompatActivity implements ParkingAda
     }
 
     @Override
-    public void resultSelected(ParkingResult result) {
+    public void onParkingResultSelected(ParkingResult result) {
         TabLayout.Tab tab = tabs.getTabAt(1);
         tab.select();
-
         tabsAdapter.mapFragment.selectParking(result.parking.identifier);
     }
+
     //endregion
 
     //region

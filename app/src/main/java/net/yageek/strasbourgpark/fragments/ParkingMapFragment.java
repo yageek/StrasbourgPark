@@ -67,7 +67,7 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
         }
 
     }
-    
+
     private void selectMarker(String identifier) {
         Marker marker = markerMap.get(identifier);
         if(marker != null) {

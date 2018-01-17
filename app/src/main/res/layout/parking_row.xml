@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     android:orientation="vertical"
+    android:background="?attr/selectableItemBackground"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
@@ -18,10 +18,8 @@
         app:layout_constraintVertical_chainStyle="spread"
         android:text="Open"
         android:textSize="15dp"
-
         android:layout_marginTop="5dp"
         android:layout_marginLeft="@dimen/row_left_margin"
-
         android:textStyle="bold"
         />
 

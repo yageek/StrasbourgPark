@@ -26,7 +26,7 @@ import net.yageek.strasbourgpark.viewmodel.ParkingModel;
 import net.yageek.strasbourgpark.views.LoadingView;
 import net.yageek.strasbourgpark.vo.DownloadResult;
 
-public class ParkingListFragment extends Fragment implements ParkingAdapter.Listener {
+public class ParkingListFragment extends Fragment implements ParkingAdapter.OnParkingResultSelected {
 
     public static final String TAG = "ParkingList";
 
@@ -38,9 +38,9 @@ public class ParkingListFragment extends Fragment implements ParkingAdapter.List
 
     private ParkingModel parkingModel;
 
-    private ParkingAdapter.Listener listener;
+    private ParkingAdapter.OnParkingResultSelected listener;
 
-    public void setListener(ParkingAdapter.Listener listener) {
+    public void setListener(ParkingAdapter.OnParkingResultSelected listener) {
         this.listener = listener;
     }
 
@@ -212,10 +212,11 @@ public class ParkingListFragment extends Fragment implements ParkingAdapter.List
         }
     }
 
+
     @Override
-    public void resultSelected(ParkingResult result) {
+    public void onParkingResultSelected(ParkingResult result) {
         if(listener != null) {
-            listener.resultSelected(result);
+            listener.onParkingResultSelected(result);
         }
     }
 }
