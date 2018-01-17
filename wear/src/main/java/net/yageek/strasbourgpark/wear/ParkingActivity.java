@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
-import android.support.wear.widget.WearableLinearLayoutManager;
 import android.support.wear.widget.WearableRecyclerView;
 import android.support.wearable.activity.WearableActivity;
 import android.view.LayoutInflater;
@@ -23,11 +22,11 @@ import java.util.List;
 
 public class ParkingActivity extends WearableActivity implements ParkingRepository.Callback {
 
-
     private WearableRecyclerView recyclerView;
     private View loadingView;
     private ParkingRepository repository = new ParkingRepository(new APIClient());
     private WearParkingAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

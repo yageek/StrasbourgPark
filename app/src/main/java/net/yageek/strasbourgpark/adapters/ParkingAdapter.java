@@ -2,6 +2,7 @@ package net.yageek.strasbourgpark.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +19,22 @@ import net.yageek.strasbourgparkapi.adapters.ParkingBaseAdapter;
  * Created by yheinrich on 08.01.18.
  */
 
-public class ParkingAdapter extends ParkingBaseAdapter<ParkingAdapter.ViewHolder> {
+public class ParkingAdapter extends ParkingBaseAdapter<ParkingAdapter.ViewHolder> implements View.OnClickListener {
+
+    public interface Listener {
+        void resultSelected(ParkingResult result);
+    }
+    public final String TAG = "ParkingAdapter";
 
     public ParkingAdapter(Context context) {
         super(context);
     }
 
+    public void setListener(Listener listener) {
+        this.listener = listener;
+    }
+
+    private Listener listener;
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View inflatedView = LayoutInflater.from(getContext()).inflate(R.layout.parking_row, parent,false );
@@ -33,7 +44,9 @@ public class ParkingAdapter extends ParkingBaseAdapter<ParkingAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ParkingResult result = getResults().get(position);
+
         holder.parkingName.setText(result.parking.name);
+
         if(result.state != null) {
             ParkingState state = result.state;
 
@@ -52,6 +65,18 @@ public class ParkingAdapter extends ParkingBaseAdapter<ParkingAdapter.ViewHolder
             holder.availability.setIndeterminate(true);
         }
 
+        holder.itemView.setTag(position);
+        holder.itemView.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Log.d(TAG, "Click on item " + v.getTag());
+
+        if(listener != null) {
+            int index = (int) v.getTag();
+            listener.resultSelected(getResults().get(index));
+        }
     }
 
 
@@ -70,7 +95,4 @@ public class ParkingAdapter extends ParkingBaseAdapter<ParkingAdapter.ViewHolder
             availability = itemView.findViewById(R.id.parking_availability_slider);
         }
     }
-
-
-
 }

@@ -58,7 +58,7 @@ public class ParkingRepository {
                         }
                     });
 
-                } catch (final IOException e) {
+                } catch (final Exception e) {
                     Log.e(TAG, "Error during download: " + e.getCause());
 
                     runOnMainThread(new Runnable() {

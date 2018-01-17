@@ -27,6 +27,12 @@ import net.yageek.strasbourgpark.vo.DownloadResult;
 import net.yageek.strasbourgparkapi.Parking;
 import net.yageek.strasbourgparkapi.ParkingState;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by yheinrich on 14.01.18.
  */
@@ -38,6 +44,7 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
     private UiSettings uiSettings;
 
     private ParkingModel parkingModel;
+    private Map<String, Marker> markerMap = new HashMap<>();
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
@@ -48,6 +55,28 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
         return view;
     }
 
+    //region Selection methods
+    public void selectParking(String identifier) {
+
+        for(ParkingResult result: parkingModel.getDownloadStatus().getValue().results) {
+
+            if(identifier.equals(result.parking.identifier)) {
+                selectMarker(identifier);
+                break;
+            }
+        }
+
+    }
+    
+    private void selectMarker(String identifier) {
+        Marker marker = markerMap.get(identifier);
+        if(marker != null) {
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 14));
+            marker.showInfoWindow();
+        }
+    }
+
+    //endregion
 
     //region OnMapReadyCallback
     @Override
@@ -71,6 +100,7 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
             generator.setStyle(IconGenerator.STYLE_ORANGE);
 
             map.clear();
+            markerMap.clear();
             for(ParkingResult result : downloadResult.results) {
 
                 Parking parking = result.parking;
@@ -86,6 +116,8 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
 
                 Marker marker = map.addMarker(options);
                 marker.setTag(result);
+
+                markerMap.put(parking.identifier, marker);
             }
 
         }

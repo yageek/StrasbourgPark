@@ -12,7 +12,7 @@
         android:id="@+id/loading_view_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fetching data..."
+        android:text="@string/fetching_data"
         android:layout_toRightOf="@id/loading_view_progressbar"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"

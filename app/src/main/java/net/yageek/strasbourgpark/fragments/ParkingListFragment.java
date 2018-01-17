@@ -26,11 +26,7 @@ import net.yageek.strasbourgpark.viewmodel.ParkingModel;
 import net.yageek.strasbourgpark.views.LoadingView;
 import net.yageek.strasbourgpark.vo.DownloadResult;
 
-/**
- * Created by yheinrich on 13.01.18.
- */
-
-public class ParkingListFragment extends Fragment {
+public class ParkingListFragment extends Fragment implements ParkingAdapter.Listener {
 
     public static final String TAG = "ParkingList";
 
@@ -41,6 +37,12 @@ public class ParkingListFragment extends Fragment {
     private TextView lastRefreshText;
 
     private ParkingModel parkingModel;
+
+    private ParkingAdapter.Listener listener;
+
+    public void setListener(ParkingAdapter.Listener listener) {
+        this.listener = listener;
+    }
 
     //region Fragment life cycle
     @Nullable
@@ -93,6 +95,7 @@ public class ParkingListFragment extends Fragment {
                 }
             }
         });
+        adapter.setListener(this);
         return rootView;
     }
 
@@ -105,7 +108,10 @@ public class ParkingListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        parkingModel.fetchData();
+
+        if(adapter.getItemCount() < 1) {
+            parkingModel.fetchData();
+        }
     }
     //endregion
 
@@ -206,4 +212,10 @@ public class ParkingListFragment extends Fragment {
         }
     }
 
+    @Override
+    public void resultSelected(ParkingResult result) {
+        if(listener != null) {
+            listener.resultSelected(result);
+        }
+    }
 }
