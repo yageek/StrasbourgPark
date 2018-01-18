@@ -2,10 +2,14 @@ package net.yageek.strasbourgpark.fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +18,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -41,7 +46,7 @@ import java.util.Map;
  * Created by yheinrich on 14.01.18.
  */
 
-public class ParkingMapFragment extends SupportMapFragment implements OnMapReadyCallback, Observer<DownloadResult> {
+public class ParkingMapFragment extends SupportMapFragment implements OnMapReadyCallback, Observer<DownloadResult>, GoogleMap.OnInfoWindowClickListener {
 
     private final static int LOCATION_REQUEST = 0;
 
@@ -123,8 +128,9 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
         // Add a marker in Sydney, Australia, and move the camera.
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(ParkingMapFragment.StrasbourgCenter, 12));
         parkingModel.getDownloadStatus().observe(this, this);
-
         map.setLatLngBoundsForCameraTarget(StrasbourgBounds());
+
+        map.setOnInfoWindowClickListener(this);
 
         // Bounds
         tryEnablingLocation();
@@ -172,12 +178,47 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
 
                 Marker marker = map.addMarker(options);
                 marker.setTag(result);
-
                 markerMap.put(parking.identifier, marker);
             }
 
         }
     }
+    
 
+    void tryDirectionForPlace(LatLng points) {
+
+        Intent intent = intentForPoint(points);
+        if(intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            AlertDialog dialog = new AlertDialog.Builder(getContext())
+                    .setTitle("Google Maps is not installed")
+                    .setMessage("Install google maps to be able to use directions.")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    }).create();
+
+
+        dialog.show();
+        }
+
+
+
+    }
+
+    Intent intentForPoint(LatLng point ) {
+        Uri uri = Uri.parse(String.format("google.navigation:q=%f,%f", point.latitude, point.longitude));
+        Intent intent =  new Intent(Intent.ACTION_VIEW, uri);
+        intent.setPackage("com.google.android.apps.maps");
+        return intent;
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        tryDirectionForPlace(marker.getPosition());
+    }
     //endregion
 }
