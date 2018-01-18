@@ -1,9 +1,7 @@
-package net.yageek.strasbourgparkapi;
+package net.yageek.strasbourgparkcommon;
 
 
 import java.io.IOException;
-
-import okhttp3.Call;
 
 /**
  * Created by yheinrich on 14.01.18.

@@ -1,4 +1,4 @@
-package net.yageek.strasbourgparkapi;
+package net.yageek.strasbourgparkcommon;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

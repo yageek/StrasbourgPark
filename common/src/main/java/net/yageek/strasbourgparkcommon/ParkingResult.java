@@ -1,4 +1,4 @@
-package net.yageek.strasbourgparkapi;
+package net.yageek.strasbourgparkcommon;
 import java.util.Comparator;
 
 

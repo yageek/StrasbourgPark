@@ -4,10 +4,10 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import net.yageek.strasbourgparkapi.ParkingResult;
-import net.yageek.strasbourgparkapi.repository.ParkingRepository;
+import net.yageek.strasbourgparkcommon.ParkingResult;
+import net.yageek.strasbourgparkcommon.repository.ParkingRepository;
 import net.yageek.strasbourgpark.vo.DownloadResult;
-import net.yageek.strasbourgparkapi.APIClient;
+import net.yageek.strasbourgparkcommon.APIClient;
 
 import java.util.List;
 

@@ -27,12 +27,12 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
 
-import net.yageek.strasbourgparkapi.ParkingResult;
-import net.yageek.strasbourgparkapi.utils.ParkingStatusUtils;
+import net.yageek.strasbourgparkcommon.ParkingResult;
+import net.yageek.strasbourgparkcommon.utils.ParkingStatusUtils;
 import net.yageek.strasbourgpark.viewmodel.ParkingModel;
 import net.yageek.strasbourgpark.vo.DownloadResult;
-import net.yageek.strasbourgparkapi.Parking;
-import net.yageek.strasbourgparkapi.ParkingState;
+import net.yageek.strasbourgparkcommon.Parking;
+import net.yageek.strasbourgparkcommon.ParkingState;
 
 import java.util.HashMap;
 import java.util.Map;

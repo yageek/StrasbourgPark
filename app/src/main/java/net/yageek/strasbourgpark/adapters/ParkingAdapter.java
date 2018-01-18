@@ -9,10 +9,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import net.yageek.strasbourgpark.R;
-import net.yageek.strasbourgparkapi.utils.ParkingStatusUtils;
-import net.yageek.strasbourgparkapi.ParkingResult;
-import net.yageek.strasbourgparkapi.ParkingState;
-import net.yageek.strasbourgparkapi.adapters.ParkingBaseAdapter;
+import net.yageek.strasbourgparkcommon.utils.ParkingStatusUtils;
+import net.yageek.strasbourgparkcommon.ParkingResult;
+import net.yageek.strasbourgparkcommon.ParkingState;
+import net.yageek.strasbourgparkcommon.adapters.ParkingBaseAdapter;
 
 /**
  * Created by yheinrich on 08.01.18.

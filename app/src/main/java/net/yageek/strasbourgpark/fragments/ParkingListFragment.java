@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import net.yageek.strasbourgpark.R;
 import net.yageek.strasbourgpark.adapters.ParkingAdapter;
-import net.yageek.strasbourgparkapi.ParkingResult;
+import net.yageek.strasbourgparkcommon.ParkingResult;
 import net.yageek.strasbourgpark.viewmodel.ParkingModel;
 import net.yageek.strasbourgpark.views.LoadingView;
 import net.yageek.strasbourgpark.vo.DownloadResult;

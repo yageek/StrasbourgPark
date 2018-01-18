@@ -17,10 +17,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import net.yageek.strasbourgparkapi.APIClient;
-import net.yageek.strasbourgparkapi.ParkingResult;
-import net.yageek.strasbourgparkapi.adapters.ParkingBaseAdapter;
-import net.yageek.strasbourgparkapi.repository.ParkingRepository;
+import net.yageek.strasbourgparkcommon.APIClient;
+import net.yageek.strasbourgparkcommon.ParkingResult;
+import net.yageek.strasbourgparkcommon.adapters.ParkingBaseAdapter;
+import net.yageek.strasbourgparkcommon.repository.ParkingRepository;
+import net.yageek.strasbourgparkcommon.utils.ParkingStatusUtils;
 
 import java.util.List;
 
@@ -112,8 +113,7 @@ public class ParkingActivity extends WearableActivity implements ParkingReposito
             holder.parkingPlacesText.setText(placeText);
 
             GradientDrawable drawable  = (GradientDrawable) holder.parkingStatusImage.getBackground();
-            
-
+            drawable.setColor(ParkingStatusUtils.colorFromStatus(getContext(), result.state.status));
         }
     }
 

@@ -1,6 +1,6 @@
 package net.yageek.strasbourgpark.vo;
 
-import net.yageek.strasbourgparkapi.ParkingResult;
+import net.yageek.strasbourgparkcommon.ParkingResult;
 
 import java.util.List;
 

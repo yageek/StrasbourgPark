@@ -19,7 +19,7 @@ import net.yageek.strasbourgpark.fragments.ParkingListFragment;
 import net.yageek.strasbourgpark.fragments.ParkingMapFragment;
 import net.yageek.strasbourgpark.viewmodel.ParkingModel;
 import net.yageek.strasbourgpark.vo.DownloadResult;
-import net.yageek.strasbourgparkapi.ParkingResult;
+import net.yageek.strasbourgparkcommon.ParkingResult;
 
 public class ParkingListActivity extends AppCompatActivity implements ParkingAdapter.OnParkingResultSelected {
 
