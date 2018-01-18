@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">StrasbourgPark</string>
-    <string name="parking_state_full">Complet</string>
-    <string name="parking_state_closed">Fermé</string>
-    <string name="parking_state_open">Ouvert</string>
-    <string name="parking_state_notavailable">Statut indisponible</string>
-    <string name="fetching_data">Téléchargement</string>
-    <string name="error_message">Le serveur est injoignable</string>
-    <string name="no_data_available">Aucune donnée disponible</string>
+
     <string name="sortby_name">Trier par nom</string>
     <string name="sortby_free_places">Trier par nombre de places disponibles</string>
     <string name="sortby_filling_rate">Trier par taux de remplissage</string>

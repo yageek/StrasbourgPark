@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">strasbourgparkapi</string>
+
+    <string name="parking_state_full">Full</string>
+    <string name="parking_state_closed">Closed</string>
+    <string name="parking_state_open">Open</string>
+    <string name="parking_state_notavailable">Data not available</string>
+    <string name="fetching_data">Fetching Data</string>
+    <string name="error_message">We can not fetch the data from the server</string>
+    <string name="no_data_available">No data available</string>
 </resources>

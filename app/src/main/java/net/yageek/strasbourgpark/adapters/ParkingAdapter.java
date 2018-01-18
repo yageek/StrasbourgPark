@@ -1,18 +1,15 @@
 package net.yageek.strasbourgpark.adapters;
 
 import android.content.Context;
-import android.nfc.Tag;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import net.yageek.strasbourgpark.R;
-import net.yageek.strasbourgpark.utils.ParkingStatusUtils;
+import net.yageek.strasbourgparkapi.utils.ParkingStatusUtils;
 import net.yageek.strasbourgparkapi.ParkingResult;
 import net.yageek.strasbourgparkapi.ParkingState;
 import net.yageek.strasbourgparkapi.adapters.ParkingBaseAdapter;

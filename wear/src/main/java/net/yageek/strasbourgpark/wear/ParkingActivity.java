@@ -2,7 +2,7 @@ package net.yageek.strasbourgpark.wear;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearSnapHelper;
@@ -26,6 +26,8 @@ import java.util.List;
 
 public class ParkingActivity extends WearableActivity implements ParkingRepository.Callback {
 
+    private TextView lastRefreshText;
+
     private WearableRecyclerView recyclerView;
     private View loadingView;
     private ParkingRepository repository = new ParkingRepository(new APIClient());
@@ -36,6 +38,7 @@ public class ParkingActivity extends WearableActivity implements ParkingReposito
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        lastRefreshText = (TextView) findViewById(R.id.last_refresh_value);
         recyclerView = (WearableRecyclerView) findViewById(R.id.parking_list);
         loadingView = findViewById(R.id.loading_view);
 
@@ -76,6 +79,7 @@ public class ParkingActivity extends WearableActivity implements ParkingReposito
     public void onResponse(List<ParkingResult> result, String lastRefresh) {
         setLoading(false);
         adapter.setResults(result);
+        lastRefreshText.setText(lastRefresh);
     }
 
     @Override
@@ -107,13 +111,16 @@ public class ParkingActivity extends WearableActivity implements ParkingReposito
             String placeText = res.getQuantityString(R.plurals.free_places, freePlaces, freePlaces);
             holder.parkingPlacesText.setText(placeText);
 
+            GradientDrawable drawable  = (GradientDrawable) holder.parkingStatusImage.getBackground();
+            
+
         }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView parkingName;
         public TextView parkingPlacesText;
-        public ImageView parkingStatus;
+        public ImageView parkingStatusImage;
         public ShapeDrawable parkingDrawable;
 
 
@@ -122,8 +129,8 @@ public class ParkingActivity extends WearableActivity implements ParkingReposito
             parkingName = (TextView) itemView.findViewById(R.id.parking_name);
             parkingPlacesText = (TextView) itemView.findViewById(R.id.parking_places);
 
-            parkingStatus = (ImageView) itemView.findViewById(R.id.parking_status_indicator);
-            parkingDrawable = (ShapeDrawable) parkingStatus.getDrawable();
+            parkingStatusImage = (ImageView) itemView.findViewById(R.id.parking_status_indicator);
+            parkingDrawable = (ShapeDrawable) parkingStatusImage.getDrawable();
 
         }
     }
