@@ -8,4 +8,5 @@
     <string name="fetching_data">Téléchargement</string>
     <string name="error_message">Le serveur est injoignable</string>
     <string name="no_data_available">Aucune donnée disponible</string>
+    <string name="retry">Réessayer</string>
 </resources>

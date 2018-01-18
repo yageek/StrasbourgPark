@@ -32,7 +32,7 @@
                 android:layout_toRightOf="@id/loading_progress_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Loading..."/>
+                android:text="@string/fetching_data"/>
         </RelativeLayout>
 
         <LinearLayout
@@ -46,6 +46,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
+                android:textSize="10dp"
+                android:text="Some elements"
+                android:visibility="invisible"
                 android:textStyle="bold"/>
 
             <android.support.wear.widget.WearableRecyclerView
@@ -55,6 +58,33 @@
                 android:layout_height="match_parent"
                 android:verticalScrollbarPosition="defaultPosition"
                 android:scrollbars="vertical"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/no_data_layer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_data_available"
+                android:textAlignment="center"
+                />
+        <Button
+            android:id="@+id/retry_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="@string/retry"
+        />
+
+
         </LinearLayout>
 
 

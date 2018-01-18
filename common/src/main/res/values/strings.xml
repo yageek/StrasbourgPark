@@ -8,4 +8,5 @@
     <string name="fetching_data">Fetching Data</string>
     <string name="error_message">We can not fetch the data from the server</string>
     <string name="no_data_available">No data available</string>
+    <string name="retry">Retry</string>
 </resources>

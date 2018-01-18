@@ -1,6 +1,8 @@
 package net.yageek.strasbourgpark.wear;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -14,6 +16,7 @@ import android.support.wearable.activity.WearableActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,17 +26,21 @@ import net.yageek.strasbourgparkcommon.adapters.ParkingBaseAdapter;
 import net.yageek.strasbourgparkcommon.repository.ParkingRepository;
 import net.yageek.strasbourgparkcommon.utils.ParkingStatusUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ParkingActivity extends WearableActivity implements ParkingRepository.Callback {
 
     private TextView lastRefreshText;
+    private View noDataLayout;
 
     private WearableRecyclerView recyclerView;
     private View loadingView;
     private ParkingRepository repository = new ParkingRepository(new APIClient());
     private WearParkingAdapter adapter;
 
+    private List<ParkingResult> resultsList = Collections.emptyList();
+    private Button retryButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,10 +62,26 @@ public class ParkingActivity extends WearableActivity implements ParkingReposito
         SnapHelper snap = new LinearSnapHelper();
         snap.attachToRecyclerView(recyclerView);
 
+        noDataLayout = findViewById(R.id.no_data_layer);
+        retryButton = findViewById(R.id.retry_button);
+        retryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fetchData();
+            }
+        });
         // Enables Always-on
         setAmbientEnabled();
+    }
 
-        fetchData();
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(resultsList.size() < 1) {
+            fetchData();
+        }
     }
 
     private void fetchData() {
@@ -70,22 +93,70 @@ public class ParkingActivity extends WearableActivity implements ParkingReposito
         if(loading) {
             loadingView.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.INVISIBLE);
+            lastRefreshText.setVisibility(View.GONE);
+            noDataLayout.setVisibility(View.INVISIBLE);
         } else {
             loadingView.setVisibility(View.INVISIBLE);
             recyclerView.setVisibility(View.VISIBLE);
         }
     }
 
+    private void showError(Throwable t) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.error_message);
+
+        builder.setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                fetchData();
+            }
+        });
+
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                setLoading(false);
+            }
+        });
+
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                setLoading(false);
+            }
+        });
+
+        builder.create().show();
+    }
+
+    private void updateContents(List<ParkingResult> result, String lastRefresh) {
+        resultsList = result;
+
+        adapter.setResults(result);
+        lastRefreshText.setText(lastRefresh);
+
+        if(result.size() < 1) {
+            lastRefreshText.setVisibility(View.GONE);
+            noDataLayout.setVisibility(View.VISIBLE);
+        } else {
+            lastRefreshText.setVisibility(View.VISIBLE);
+            noDataLayout.setVisibility(View.INVISIBLE);
+        }
+    }
+
     @Override
     public void onResponse(List<ParkingResult> result, String lastRefresh) {
         setLoading(false);
-        adapter.setResults(result);
-        lastRefreshText.setText(lastRefresh);
+        updateContents(result, lastRefresh);
     }
 
     @Override
     public void onFailure(Throwable t) {
         setLoading(false);
+        showError(t);
+
+        updateContents(Collections.<ParkingResult>emptyList(), "");
     }
 
     public static class WearParkingAdapter extends ParkingBaseAdapter<ViewHolder> {
