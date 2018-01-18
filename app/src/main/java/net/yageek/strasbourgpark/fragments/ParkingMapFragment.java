@@ -127,20 +127,21 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(ParkingMapFragment.StrasbourgCenter, 12));
         parkingModel.getDownloadStatus().observe(this, this);
 
+        map.setLatLngBoundsForCameraTarget(StrasbourgBounds());
 
         // Bounds
         tryEnablingLocation();
     }
 
-//    static LatLngBounds StrasbourBounds() {
-//        LatLngBounds bounds = LatLngBounds.builder()
-//                .include(new LatLng())
-//                .include(new LatLng())
-//                .include(new LatLng())
-//                .include(new LatLng())
-//
-//                return bounds;
-//    }
+    static LatLngBounds StrasbourgBounds() {
+        LatLngBounds bounds = LatLngBounds.builder()
+                .include(new LatLng(48.6456, 7.6492))
+                .include(new LatLng(48.6456, 7.8789))
+                .include(new LatLng(48.5183, 7.8789))
+                .include(new LatLng(48.5183, 7.6492)).build();
+                return bounds;
+    }
+
     @Override
     public void onResume() {
         super.onResume();

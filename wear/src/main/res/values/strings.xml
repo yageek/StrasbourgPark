@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">StrasbourgParkWear</string>
-    <!--
-    This string is used for square devices and overridden by hello_world in
-    values-round/strings.xml for round devices.
-    -->
-    <string name="hello_world">Hello Square World!</string>
+    <plurals name="free_places">
+        <item quantity="zero">No free place</item>
+        <item quantity="one">%d free place</item>
+        <item quantity="other">%d free places</item>
+    </plurals>
 </resources>

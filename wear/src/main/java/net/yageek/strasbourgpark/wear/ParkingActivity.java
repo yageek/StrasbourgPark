@@ -1,16 +1,20 @@
 package net.yageek.strasbourgpark.wear;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
+import android.support.wear.widget.WearableLinearLayoutManager;
 import android.support.wear.widget.WearableRecyclerView;
 import android.support.wearable.activity.WearableActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.yageek.strasbourgparkapi.APIClient;
@@ -41,7 +45,7 @@ public class ParkingActivity extends WearableActivity implements ParkingReposito
         CustomScrollingLayoutCallback customScrollingLayoutCallback =
                 new CustomScrollingLayoutCallback();
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new WearableLinearLayoutManager(this));
 
         recyclerView.setAdapter(adapter);
         SnapHelper snap = new LinearSnapHelper();
@@ -95,15 +99,32 @@ public class ParkingActivity extends WearableActivity implements ParkingReposito
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             ParkingResult result = getResults().get(position);
+
             holder.parkingName.setText(result.parking.name);
+
+            int freePlaces = result.state.free;
+            Resources res = getContext().getResources();
+            String placeText = res.getQuantityString(R.plurals.free_places, freePlaces, freePlaces);
+            holder.parkingPlacesText.setText(placeText);
+
         }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView parkingName;
+        public TextView parkingPlacesText;
+        public ImageView parkingStatus;
+        public ShapeDrawable parkingDrawable;
+
+
         public ViewHolder(View itemView) {
             super(itemView);
-            parkingName = (TextView) itemView.findViewById(R.id.parking_text_name);
+            parkingName = (TextView) itemView.findViewById(R.id.parking_name);
+            parkingPlacesText = (TextView) itemView.findViewById(R.id.parking_places);
+
+            parkingStatus = (ImageView) itemView.findViewById(R.id.parking_status_indicator);
+            parkingDrawable = (ShapeDrawable) parkingStatus.getDrawable();
+
         }
     }
 

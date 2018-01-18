@@ -1,1 +1,1 @@
-include ':app', ':wear', ':strasbourgparkapi'
+include ':app', ':wear', ':common'
