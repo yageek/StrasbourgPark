@@ -153,49 +153,86 @@ public class ParkingActivity extends WearableActivity implements ParkingReposito
 
     @Override
     public void onFailure(Throwable t) {
-        setLoading(false);
+
         showError(t);
 
         updateContents(Collections.<ParkingResult>emptyList(), "");
     }
 
-    public static class WearParkingAdapter extends ParkingBaseAdapter<ViewHolder> {
+    public static class WearParkingAdapter extends ParkingBaseAdapter<RecyclerView.ViewHolder> {
+
+        public final static int ParkingRowType = 0;
+        public final static int RetryRowType = 1;
 
         public WearParkingAdapter(Context context) {
             super(context);
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.parking_result_row, parent, false);
-            return new ViewHolder(view);
+            switch (viewType) {
+                default:
+                case ParkingRowType:
+                    View view = LayoutInflater.from(getContext()).inflate(R.layout.parking_result_row, parent, false);
+                    return new ParkingViewHolder(view);
+                case RetryRowType:
+
+                    return new ReloadViewHolder(getContext(), new Button(getContext()));
+            }
+
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-            ParkingResult result = getResults().get(position);
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            int type = holder.getItemViewType();
 
-            holder.parkingName.setText(result.parking.name);
+            switch(type) {
+                case RetryRowType:
+                    break;
+                case ParkingRowType:
+                    ParkingViewHolder pHolder = (ParkingViewHolder) holder;
+                    ParkingResult result = getResults().get(position);
 
-            int freePlaces = result.state.free;
-            Resources res = getContext().getResources();
-            String placeText = res.getQuantityString(R.plurals.free_places, freePlaces, freePlaces);
-            holder.parkingPlacesText.setText(placeText);
+                    pHolder.parkingName.setText(result.parking.name);
 
-            GradientDrawable drawable  = (GradientDrawable) holder.parkingStatusImage.getBackground();
-            drawable.setColor(ParkingStatusUtils.colorFromStatus(getContext(), result.state.status));
+                    int freePlaces = result.state.free;
+                    Resources res = getContext().getResources();
+                    String placeText = res.getQuantityString(R.plurals.free_places, freePlaces, freePlaces);
+                    pHolder.parkingPlacesText.setText(placeText);
+
+                    GradientDrawable drawable  = (GradientDrawable) pHolder.parkingStatusImage.getBackground();
+                    drawable.setColor(ParkingStatusUtils.colorFromStatus(getContext(), result.state.status));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return super.getItemCount() + 1;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+
+            int result = getItemCount() - position - 1;
+            if (result > 0) {
+                return ParkingRowType;
+            }
+            return RetryRowType;
         }
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ParkingViewHolder extends RecyclerView.ViewHolder {
         public TextView parkingName;
         public TextView parkingPlacesText;
         public ImageView parkingStatusImage;
         public ShapeDrawable parkingDrawable;
 
 
-        public ViewHolder(View itemView) {
+        public ParkingViewHolder(View itemView) {
             super(itemView);
             parkingName = (TextView) itemView.findViewById(R.id.parking_name);
             parkingPlacesText = (TextView) itemView.findViewById(R.id.parking_places);
@@ -203,6 +240,16 @@ public class ParkingActivity extends WearableActivity implements ParkingReposito
             parkingStatusImage = (ImageView) itemView.findViewById(R.id.parking_status_indicator);
             parkingDrawable = (ShapeDrawable) parkingStatusImage.getDrawable();
 
+        }
+    }
+
+    public static class ReloadViewHolder extends RecyclerView.ViewHolder {
+
+        public Button button;
+        public ReloadViewHolder(Context context, Button button) {
+            super(button);
+            this.button = button;
+            button.setText(context.getResources().getText(R.string.retry));
         }
     }
 

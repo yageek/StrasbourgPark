@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
 
+import net.yageek.strasbourgpark.R;
 import net.yageek.strasbourgparkcommon.ParkingResult;
 import net.yageek.strasbourgparkcommon.utils.ParkingStatusUtils;
 import net.yageek.strasbourgpark.viewmodel.ParkingModel;
@@ -94,7 +95,8 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             if(ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
-                // TODO: Location
+
+                // TODO: Show reason why you need it.
 
             } else {
                 String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
@@ -183,7 +185,7 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
 
         }
     }
-    
+
 
     void tryDirectionForPlace(LatLng points) {
 
@@ -192,8 +194,8 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
             startActivity(intent);
         } else {
             AlertDialog dialog = new AlertDialog.Builder(getContext())
-                    .setTitle("Google Maps is not installed")
-                    .setMessage("Install google maps to be able to use directions.")
+                    .setTitle(getContext().getResources().getString(R.string.alert_maps_title))
+                    .setMessage(getContext().getResources().getString(R.string.alert_maps_content))
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -201,12 +203,8 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
                         }
                     }).create();
 
-
         dialog.show();
         }
-
-
-
     }
 
     Intent intentForPoint(LatLng point ) {
