@@ -159,7 +159,7 @@ public class ParkingActivity extends WearableActivity implements ParkingReposito
         updateContents(Collections.<ParkingResult>emptyList(), "");
     }
 
-    public static class WearParkingAdapter extends ParkingBaseAdapter<RecyclerView.ViewHolder> {
+    public class WearParkingAdapter extends ParkingBaseAdapter<RecyclerView.ViewHolder> {
 
         public final static int ParkingRowType = 0;
         public final static int RetryRowType = 1;
@@ -178,7 +178,14 @@ public class ParkingActivity extends WearableActivity implements ParkingReposito
                     return new ParkingViewHolder(view);
                 case RetryRowType:
 
-                    return new ReloadViewHolder(getContext(), new Button(getContext()));
+                    Button button = new Button(getContext());
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ParkingActivity.this.fetchData();
+                        }
+                    });
+                    return new ReloadViewHolder(getContext(), button);
             }
 
         }
@@ -225,7 +232,7 @@ public class ParkingActivity extends WearableActivity implements ParkingReposito
         }
     }
 
-    public static class ParkingViewHolder extends RecyclerView.ViewHolder {
+    public class ParkingViewHolder extends RecyclerView.ViewHolder {
         public TextView parkingName;
         public TextView parkingPlacesText;
         public ImageView parkingStatusImage;
