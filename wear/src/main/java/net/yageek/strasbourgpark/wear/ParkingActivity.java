@@ -87,6 +87,7 @@ public class ParkingActivity extends WearableActivity implements ParkingReposito
     private void fetchData() {
         setLoading(true);
         repository.getParkingResults(this);
+        recyclerView.scrollToPosition(0);
     }
 
     private void setLoading(boolean loading) {
