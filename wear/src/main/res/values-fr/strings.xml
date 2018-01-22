@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">StrasbourgParkWear</string>
+
+    <plurals name="free_places">
+        <item quantity="zero">Aucune place libre</item>
+        <item quantity="one">%d place libre</item>
+        <item quantity="other">%d places libres</item>
+    </plurals>
+</resources>

@@ -1,4 +1,4 @@
-package net.yageek.strasbourgpark.api;
+package net.yageek.strasbourgparkcommon;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

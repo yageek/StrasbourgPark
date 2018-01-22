@@ -1,10 +1,10 @@
-package net.yageek.strasbourgpark.utils;
+package net.yageek.strasbourgparkcommon.utils;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import net.yageek.strasbourgparkcommon.ParkingState;
+import net.yageek.strasbourgparkcommon.R;
 
-import net.yageek.strasbourgpark.R;
-import net.yageek.strasbourgpark.api.ParkingState;
 
 /**
  * Created by yheinrich on 15.01.18.

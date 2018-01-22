@@ -1,18 +1,17 @@
-package net.yageek.strasbourgpark.repository;
+package net.yageek.strasbourgparkcommon.repository;
 
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import net.yageek.strasbourgpark.api.Parking;
-import net.yageek.strasbourgpark.api.ParkingLocationResponse;
-import net.yageek.strasbourgpark.api.ParkingState;
-import net.yageek.strasbourgpark.api.ParkingStateResponse;
-import net.yageek.strasbourgpark.api.Webservice;
+import net.yageek.strasbourgparkcommon.Parking;
+import net.yageek.strasbourgparkcommon.ParkingLocationResponse;
+import net.yageek.strasbourgparkcommon.ParkingResult;
+import net.yageek.strasbourgparkcommon.ParkingState;
+import net.yageek.strasbourgparkcommon.ParkingStateResponse;
+import net.yageek.strasbourgparkcommon.Webservice;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -58,7 +57,7 @@ public class ParkingRepository {
                         }
                     });
 
-                } catch (final IOException e) {
+                } catch (final Exception e) {
                     Log.e(TAG, "Error during download: " + e.getCause());
 
                     runOnMainThread(new Runnable() {
@@ -92,61 +91,5 @@ public class ParkingRepository {
     private void runOnMainThread(Runnable runnable) {
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(runnable);
-    }
-
-    /**
-     * Created by yheinrich on 09.01.18.
-     */
-
-    public static class ParkingResult {
-        public final String lastRefresh;
-        public final Parking parking;
-        public final ParkingState state;
-
-        protected ParkingResult(Parking parking, ParkingState state, String lastRefresh) {
-            this.parking = parking;
-            this.state = state;
-            this.lastRefresh = lastRefresh;
-        }
-
-        int fillingRate() {
-            return (int) ((double) state.free / (double) state.total * 100.0);
-        }
-
-        public enum Comparators {
-            ByName,
-            ByFreePlaces,
-            ByFillingRate;
-
-            Comparator<ParkingResult> nameComparator = new Comparator<ParkingResult>() {
-                @Override
-                public int compare(ParkingResult parkingResult, ParkingResult t1) {
-                    return parkingResult.parking.name.compareTo(t1.parking.name);
-                }
-            };
-
-            Comparator<ParkingResult> freePlaces = new Comparator<ParkingResult>() {
-                @Override
-                public int compare(ParkingResult parkingResult, ParkingResult t1) {
-                    return t1.state.free - parkingResult.state.free;
-                }
-            };
-
-            Comparator<ParkingResult> fillingRate = new Comparator<ParkingResult>() {
-                @Override
-                public int compare(ParkingResult parkingResult, ParkingResult t1) {
-                    return t1.fillingRate() - parkingResult.fillingRate();
-                }
-            };
-
-            public Comparator<ParkingResult> getComparator() {
-                switch (this) {
-                    case ByFillingRate: return fillingRate;
-                    case ByFreePlaces: return freePlaces;
-                    default: return nameComparator;
-                }
-
-            }
-        }
     }
 }

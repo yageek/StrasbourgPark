@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">StrasbourgPark</string>
-    <string name="parking_state_full">Complet</string>
-    <string name="parking_state_closed">Fermé</string>
-    <string name="parking_state_open">Ouvert</string>
-    <string name="parking_state_notavailable">Statut indisponible</string>
-    <string name="fetching_data">Téléchargement</string>
-    <string name="error_message">Le serveur est injoignable</string>
-    <string name="no_data_available">Aucune donnée disponible</string>
+
     <string name="sortby_name">Trier par nom</string>
     <string name="sortby_free_places">Trier par nombre de places disponibles</string>
     <string name="sortby_filling_rate">Trier par taux de remplissage</string>
-    <string name="retry">Réessayer</string>
     <string name="list">Liste</string>
     <string name="map">Carte</string>
+    <string name="alert_maps_title">Google Maps n\'est pas installé</string>
+    <string name="alert_maps_content">Installez Google maps pour utiliser la navigation</string>
+    <string name="open_in_maps">Ouvrir la navigation dans Google Maps ?</string>
 </resources>

@@ -1,4 +1,4 @@
-package net.yageek.strasbourgpark.api;
+package net.yageek.strasbourgparkcommon;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;

@@ -8,24 +8,26 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import net.yageek.strasbourgpark.R;
+import net.yageek.strasbourgpark.adapters.ParkingAdapter;
 import net.yageek.strasbourgpark.fragments.ParkingListFragment;
 import net.yageek.strasbourgpark.fragments.ParkingMapFragment;
 import net.yageek.strasbourgpark.viewmodel.ParkingModel;
 import net.yageek.strasbourgpark.vo.DownloadResult;
+import net.yageek.strasbourgparkcommon.ParkingResult;
 
-public class ParkingListActivity extends AppCompatActivity {
+public class ParkingListActivity extends AppCompatActivity implements ParkingAdapter.OnParkingResultSelected {
 
     private static final String TAG = "Main activity";
     private ViewPager viewPager;
     private TabsAdapter tabsAdapter;
     private ParkingModel parkingModel;
+    private TabLayout tabs;
 
     //region Activity lifecycle
     @Override
@@ -38,28 +40,53 @@ public class ParkingListActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.container);
         viewPager.setAdapter(tabsAdapter);
 
-        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
+        tabs = (TabLayout) findViewById(R.id.tabs);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
         tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
 
         parkingModel = ViewModelProviders.of(this).get(ParkingModel.class);
+
     }
+
+    @Override
+    public void onParkingResultSelected(ParkingResult result) {
+        TabLayout.Tab tab = tabs.getTabAt(1);
+        tab.select();
+        tabsAdapter.mapFragment.selectParking(result.parking.identifier);
+    }
+
     //endregion
 
     //region
-    public static class TabsAdapter extends FragmentPagerAdapter {
+    public class TabsAdapter extends FragmentPagerAdapter {
+
+        private ParkingListFragment listFragment;
+        private ParkingMapFragment mapFragment;
 
         public TabsAdapter(FragmentManager fm) {
             super(fm);
+        }
+
+
+        public ParkingListFragment getListFragment() {
+            return listFragment;
+        }
+
+        public ParkingMapFragment getMapFragment() {
+            return mapFragment;
         }
 
         @Override
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new ParkingListFragment();
+                    listFragment = new ParkingListFragment();
+                    listFragment.setListener(ParkingListActivity.this);
+                    return listFragment;
+
                 default:
-                    return new ParkingMapFragment();
+                    mapFragment = new ParkingMapFragment();
+                    return mapFragment;
             }
         }
 

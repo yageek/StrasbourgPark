@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorParkingFull">#bc0707</color>
+    <color name="colorParkingClosed">#c6671a</color>
+    <color name="colorParkingOpen">#71c700</color>
+    <color name="colorParkingNotAvailable">#646464</color>
+</resources>

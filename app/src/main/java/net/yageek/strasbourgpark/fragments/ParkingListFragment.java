@@ -2,48 +2,47 @@ package net.yageek.strasbourgpark.fragments;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.support.v4.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import net.yageek.strasbourgpark.repository.ParkingRepository;
-import net.yageek.strasbourgpark.viewmodel.ParkingModel;
 import net.yageek.strasbourgpark.R;
 import net.yageek.strasbourgpark.adapters.ParkingAdapter;
-import net.yageek.strasbourgpark.api.APIClient;
+import net.yageek.strasbourgparkcommon.ParkingResult;
+import net.yageek.strasbourgpark.viewmodel.ParkingModel;
 import net.yageek.strasbourgpark.views.LoadingView;
 import net.yageek.strasbourgpark.vo.DownloadResult;
 
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-/**
- * Created by yheinrich on 13.01.18.
- */
-
-public class ParkingListFragment extends Fragment {
+public class ParkingListFragment extends Fragment implements ParkingAdapter.OnParkingResultSelected {
 
     public static final String TAG = "ParkingList";
 
     private ParkingAdapter adapter;
-    private ListView listView;
+    private RecyclerView recyclerView;
     private LoadingView loadingView;
     private TextView noItemTextView;
     private TextView lastRefreshText;
 
     private ParkingModel parkingModel;
+
+    private ParkingAdapter.OnParkingResultSelected listener;
+
+    public void setListener(ParkingAdapter.OnParkingResultSelected listener) {
+        this.listener = listener;
+    }
 
     //region Fragment life cycle
     @Nullable
@@ -51,13 +50,14 @@ public class ParkingListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.parking_list_fragment, container, false);
 
-        listView = rootView.findViewById(R.id.parking_list_view);
+        recyclerView = rootView.findViewById(R.id.parking_list_view);
         loadingView = rootView.findViewById(R.id.loading_view);
         noItemTextView = rootView.findViewById(R.id.parking_list_view_no_item);
         lastRefreshText = rootView.findViewById(R.id.parking_last_refresh_text);
 
-        adapter = new ParkingAdapter(getActivity().getBaseContext());
-        listView.setAdapter(adapter);
+        adapter = new ParkingAdapter(getActivity());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         setHasOptionsMenu(true);
 
@@ -67,29 +67,51 @@ public class ParkingListFragment extends Fragment {
 
         parkingModel.getDownloadStatus().observe(this, new Observer<DownloadResult>() {
             @Override
-            public void onChanged(@Nullable DownloadResult downloadResult) {
+            public void onChanged(@Nullable final DownloadResult downloadResult) {
                 switch(downloadResult.status) {
                     case Error:
-                        showError();
+
+                        uiRefreshDelay(new Runnable() {
+                            @Override
+                            public void run() {
+                                showError();
+                            }
+                        });
+
                         break;
                     case Loading:
                         setLoading(true);
                         break;
                     case Success:
-                        adapter.setResults(downloadResult.results);
-                        lastRefreshText.setText(downloadResult.lastRefreshTime);
-                        setLoading(false);
+                        uiRefreshDelay(new Runnable() {
+                            @Override
+                            public void run() {
+                                adapter.setResults(downloadResult.results);
+                                lastRefreshText.setText(downloadResult.lastRefreshTime);
+                                setLoading(false);
+                            }
+                        });
                         break;
                 }
             }
         });
+        adapter.setListener(this);
         return rootView;
+    }
+
+    private void uiRefreshDelay(Runnable r) {
+
+        Handler handler = new Handler(Looper.myLooper());
+        handler.postDelayed(r, 800);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        parkingModel.fetchData();
+
+        if(adapter.getItemCount() < 1) {
+            parkingModel.fetchData();
+        }
     }
     //endregion
 
@@ -122,13 +144,13 @@ public class ParkingListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sortby_name:
-                adapter.setComparator(ParkingRepository.ParkingResult.Comparators.ByName);
+                adapter.setComparator(ParkingResult.Comparators.ByName);
                 return true;
             case R.id.sortby_free_places:
-                adapter.setComparator(ParkingRepository.ParkingResult.Comparators.ByFreePlaces);
+                adapter.setComparator(ParkingResult.Comparators.ByFreePlaces);
                 return true;
             case R.id.sortby_fillingrate:
-                adapter.setComparator(ParkingRepository.ParkingResult.Comparators.ByFillingRate);
+                adapter.setComparator(ParkingResult.Comparators.ByFillingRate);
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -138,12 +160,12 @@ public class ParkingListFragment extends Fragment {
     private void setLoading(boolean isLoading) {
 
         if(isLoading) {
-            listView.setVisibility(View.INVISIBLE);
+            recyclerView.setVisibility(View.INVISIBLE);
             loadingView.setVisibility(View.VISIBLE);
             noItemTextView.setVisibility(View.INVISIBLE);
             lastRefreshText.setVisibility(View.GONE);
         } else {
-            listView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
             loadingView.setVisibility(View.INVISIBLE);
             updateContents();
         }
@@ -181,7 +203,7 @@ public class ParkingListFragment extends Fragment {
 
     private void updateContents() {
 
-        if(adapter.getCount() < 1) {
+        if(adapter.getItemCount() < 1) {
             noItemTextView.setVisibility(View.VISIBLE);
             lastRefreshText.setVisibility(View.GONE);
         } else {
@@ -190,4 +212,11 @@ public class ParkingListFragment extends Fragment {
         }
     }
 
+
+    @Override
+    public void onParkingResultSelected(ParkingResult result) {
+        if(listener != null) {
+            listener.onParkingResultSelected(result);
+        }
+    }
 }
