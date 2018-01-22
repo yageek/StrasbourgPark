@@ -9,4 +9,5 @@
     <string name="map">Carte</string>
     <string name="alert_maps_title">Google Maps n\'est pas installé</string>
     <string name="alert_maps_content">Installez Google maps pour utiliser la navigation</string>
+    <string name="open_in_maps">Ouvrir la navigation dans Google Maps ?</string>
 </resources>

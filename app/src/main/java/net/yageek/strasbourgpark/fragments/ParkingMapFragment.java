@@ -5,8 +5,10 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -91,12 +93,14 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
 
 
     //region permissions
+    @SuppressLint("MissingPermission")
     private void tryEnablingLocation() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             if(ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
 
                 // TODO: Show reason why you need it.
+
 
             } else {
                 String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
@@ -135,7 +139,7 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
         map.setOnInfoWindowClickListener(this);
 
         // Bounds
-        tryEnablingLocation();
+//        tryEnablingLocation();
     }
 
     static LatLngBounds StrasbourgBounds() {
@@ -151,9 +155,9 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
     public void onResume() {
         super.onResume();
 
-        if(map != null && !map.isMyLocationEnabled()) {
-            tryEnablingLocation();
-        }
+//        if(map != null && !map.isMyLocationEnabled()) {
+//            tryEnablingLocation();
+//        }
     }
 
     @Override
@@ -186,11 +190,37 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
         }
     }
 
+    void showConfirmDirectionDialogIfNeeded(final LatLng points) {
+
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
+        .setTitle(R.string.open_in_maps)
+        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        tryDirectionForPlace(points);
+                    }
+        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+        }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+
+                    }
+        }).create();
+
+        dialog.show();
+
+    }
 
     void tryDirectionForPlace(LatLng points) {
 
         Intent intent = intentForPoint(points);
+
         if(intent.resolveActivity(getActivity().getPackageManager()) != null) {
+
             startActivity(intent);
         } else {
             AlertDialog dialog = new AlertDialog.Builder(getContext())
@@ -203,7 +233,7 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
                         }
                     }).create();
 
-        dialog.show();
+            dialog.show();
         }
     }
 
@@ -216,7 +246,7 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        tryDirectionForPlace(marker.getPosition());
+        showConfirmDirectionDialogIfNeeded(marker.getPosition());
     }
     //endregion
 }
