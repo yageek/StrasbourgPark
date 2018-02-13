@@ -65,27 +65,21 @@ public class ParkingListActivity extends AppCompatActivity implements ParkingAda
 
         public TabsAdapter(FragmentManager fm) {
             super(fm);
+            listFragment = new ParkingListFragment();
+            listFragment.setListener(ParkingListActivity.this);
+
+            mapFragment = new ParkingMapFragment();
+
         }
 
-
-        public ParkingListFragment getListFragment() {
-            return listFragment;
-        }
-
-        public ParkingMapFragment getMapFragment() {
-            return mapFragment;
-        }
 
         @Override
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    listFragment = new ParkingListFragment();
-                    listFragment.setListener(ParkingListActivity.this);
                     return listFragment;
 
                 default:
-                    mapFragment = new ParkingMapFragment();
                     return mapFragment;
             }
         }
