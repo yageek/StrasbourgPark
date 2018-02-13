@@ -1,5 +1,8 @@
 # Changelog
 
+# 1.2
+- Fix crashes
+
 # 1.1
 - Add basic map
 
