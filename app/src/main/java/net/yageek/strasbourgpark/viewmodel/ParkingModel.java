@@ -1,13 +1,13 @@
 package net.yageek.strasbourgpark.viewmodel;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
-import net.yageek.strasbourgparkcommon.ParkingResult;
-import net.yageek.strasbourgparkcommon.repository.ParkingRepository;
+import net.yageek.common.ParkingResult;
+import net.yageek.common.repository.ParkingRepository;
 import net.yageek.strasbourgpark.vo.DownloadResult;
-import net.yageek.strasbourgparkcommon.APIClient;
+import net.yageek.common.APIClient;
 
 import java.util.List;
 

@@ -1,9 +1,9 @@
-package net.yageek.strasbourgparkcommon.adapters;
+package net.yageek.common.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
-import net.yageek.strasbourgparkcommon.ParkingResult;
+import net.yageek.common.ParkingResult;
 
 import java.util.Collections;
 import java.util.List;

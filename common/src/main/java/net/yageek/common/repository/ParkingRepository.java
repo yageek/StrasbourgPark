@@ -1,15 +1,15 @@
-package net.yageek.strasbourgparkcommon.repository;
+package net.yageek.common.repository;
 
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import net.yageek.strasbourgparkcommon.Parking;
-import net.yageek.strasbourgparkcommon.ParkingLocationResponse;
-import net.yageek.strasbourgparkcommon.ParkingResult;
-import net.yageek.strasbourgparkcommon.ParkingState;
-import net.yageek.strasbourgparkcommon.ParkingStateResponse;
-import net.yageek.strasbourgparkcommon.Webservice;
+import net.yageek.common.Parking;
+import net.yageek.common.ParkingLocationResponse;
+import net.yageek.common.ParkingResult;
+import net.yageek.common.ParkingState;
+import net.yageek.common.ParkingStateResponse;
+import net.yageek.common.Webservice;
 
 import java.util.ArrayList;
 import java.util.List;

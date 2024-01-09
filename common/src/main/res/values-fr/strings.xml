@@ -6,7 +6,5 @@
     <string name="parking_state_open">Ouvert</string>
     <string name="parking_state_notavailable">Statut indisponible</string>
     <string name="fetching_data">Téléchargement</string>
-    <string name="error_message">Le serveur est injoignable</string>
     <string name="no_data_available">Aucune donnée disponible</string>
-    <string name="retry">Réessayer</string>
 </resources>

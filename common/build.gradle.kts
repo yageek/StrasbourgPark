@@ -26,10 +26,10 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation("com.squareup.okhttp3:okhttp:3.9.1")
     implementation("com.google.code.gson:gson:2.8.2")
-    implementation("com.android.support:recyclerview-v7:27.0.2")
+    implementation("androidx.recyclerview:recyclerview:1.0.0")
     testImplementation("junit:junit:4.12")
-    androidTestImplementation("com.android.support.test:runner:1.0.1")
-    androidTestImplementation("com.android.support.test.espresso:espresso-core:3.0.1")
+    androidTestImplementation("androidx.test.ext:junit:1.1.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.1.0")
 }
 
 //

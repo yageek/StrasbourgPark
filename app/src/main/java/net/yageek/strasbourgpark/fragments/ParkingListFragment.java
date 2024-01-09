@@ -1,16 +1,18 @@
 package net.yageek.strasbourgpark.fragments;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,9 +21,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import net.yageek.strasbourgpark.common.R;
+import net.yageek.strasbourgpark.R;
 import net.yageek.strasbourgpark.adapters.ParkingAdapter;
-import net.yageek.strasbourgparkcommon.ParkingResult;
+import net.yageek.common.ParkingResult;
 import net.yageek.strasbourgpark.viewmodel.ParkingModel;
 import net.yageek.strasbourgpark.views.LoadingView;
 import net.yageek.strasbourgpark.vo.DownloadResult;
@@ -140,20 +142,22 @@ public class ParkingListFragment extends Fragment implements ParkingAdapter.OnPa
         inflater.inflate(R.menu.list_fragment_menu, menu);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.sortby_name:
-                adapter.setComparator(ParkingResult.Comparators.ByName);
-                return true;
-            case R.id.sortby_free_places:
-                adapter.setComparator(ParkingResult.Comparators.ByFreePlaces);
-                return true;
-            case R.id.sortby_fillingrate:
-                adapter.setComparator(ParkingResult.Comparators.ByFillingRate);
-            default:
-                return super.onOptionsItemSelected(item);
+        int itemId = item.getItemId();
+        if (itemId == R.id.sortby_name) {
+            adapter.setComparator(ParkingResult.Comparators.ByName);
+            return true;
+        } else if (itemId == R.id.sortby_free_places) {
+            adapter.setComparator(ParkingResult.Comparators.ByFreePlaces);
+            return true;
+        } else if (itemId == R.id.sortby_fillingrate) {
+            adapter.setComparator(ParkingResult.Comparators.ByFillingRate);
+
+            return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
 
     //endregion

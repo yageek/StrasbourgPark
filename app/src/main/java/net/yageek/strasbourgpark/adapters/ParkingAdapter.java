@@ -1,18 +1,18 @@
 package net.yageek.strasbourgpark.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import net.yageek.strasbourgparkcommon.utils.ParkingStatusUtils;
-import net.yageek.strasbourgparkcommon.ParkingResult;
-import net.yageek.strasbourgparkcommon.ParkingState;
-import net.yageek.strasbourgparkcommon.adapters.ParkingBaseAdapter;
-import net.yageek.strasbourgpark.;
+import net.yageek.common.ParkingResult;
+import net.yageek.common.ParkingState;
+import net.yageek.common.adapters.ParkingBaseAdapter;
+import net.yageek.common.utils.ParkingStatusUtils;
+import net.yageek.strasbourgpark.R;
 /**
  * Created by yheinrich on 08.01.18.
  */

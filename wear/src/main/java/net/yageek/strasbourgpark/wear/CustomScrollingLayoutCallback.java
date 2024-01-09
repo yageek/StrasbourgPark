@@ -1,7 +1,7 @@
 package net.yageek.strasbourgpark.wear;
 
-import android.support.v7.widget.RecyclerView;
-import android.support.wear.widget.WearableLinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.wear.widget.WearableLinearLayoutManager;
 import android.view.View;
 
 /**

@@ -3,24 +3,22 @@ package net.yageek.strasbourgpark.fragments;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,12 +33,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
 
 import net.yageek.strasbourgpark.R;
-import net.yageek.strasbourgparkcommon.ParkingResult;
-import net.yageek.strasbourgparkcommon.utils.ParkingStatusUtils;
+import net.yageek.common.ParkingResult;
+import net.yageek.common.utils.ParkingStatusUtils;
 import net.yageek.strasbourgpark.viewmodel.ParkingModel;
 import net.yageek.strasbourgpark.vo.DownloadResult;
-import net.yageek.strasbourgparkcommon.Parking;
-import net.yageek.strasbourgparkcommon.ParkingState;
+import net.yageek.common.Parking;
+import net.yageek.common.ParkingState;
 
 import java.util.HashMap;
 import java.util.Map;

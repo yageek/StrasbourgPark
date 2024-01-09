@@ -1,13 +1,13 @@
 package net.yageek.strasbourgpark.activities;
 
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.tabs.TabLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,7 +19,7 @@ import net.yageek.strasbourgpark.fragments.ParkingListFragment;
 import net.yageek.strasbourgpark.fragments.ParkingMapFragment;
 import net.yageek.strasbourgpark.viewmodel.ParkingModel;
 import net.yageek.strasbourgpark.vo.DownloadResult;
-import net.yageek.strasbourgparkcommon.ParkingResult;
+import net.yageek.common.ParkingResult;
 
 public class ParkingListActivity extends AppCompatActivity implements ParkingAdapter.OnParkingResultSelected {
 
@@ -121,13 +121,11 @@ public class ParkingListActivity extends AppCompatActivity implements ParkingAda
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.refresh_data:
-                parkingModel.fetchData();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.refresh_data) {
+            parkingModel.fetchData();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
     //endregion
 
