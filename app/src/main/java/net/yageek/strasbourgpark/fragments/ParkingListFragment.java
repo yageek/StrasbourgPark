@@ -19,7 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import net.yageek.strasbourgpark.R;
+import net.yageek.strasbourgpark.common.R;
 import net.yageek.strasbourgpark.adapters.ParkingAdapter;
 import net.yageek.strasbourgparkcommon.ParkingResult;
 import net.yageek.strasbourgpark.viewmodel.ParkingModel;

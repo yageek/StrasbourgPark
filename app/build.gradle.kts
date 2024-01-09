@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "net.yageek"
-    compileSdkVersion = "android-27"
+    compileSdkVersion = "android-33"
 
     defaultConfig {
         applicationId = "net.yageek.strasbourgpark"

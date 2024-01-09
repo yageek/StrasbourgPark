@@ -1,16 +1,14 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
 }
 
 android {
     namespace = "net.yageek.strasbourgpark.common"
-    compileSdkVersion = "android-27"
+    compileSdkVersion = "android-33"
 
     defaultConfig {
-        applicationId = "net.yageek.strasbourgpark.common"
         minSdk =  14
         targetSdk = 33
-        versionName = "1.2.0"
     }
 
     buildTypes {

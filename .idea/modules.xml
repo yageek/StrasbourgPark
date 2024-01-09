@@ -11,6 +11,10 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/My_Application.common.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/common/My_Application.common.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/My_Application.common.main.iml" filepath="$PROJECT_DIR$/.idea/modules/common/My_Application.common.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/My_Application.common.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/common/My_Application.common.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/wear/My_Application.wear.iml" filepath="$PROJECT_DIR$/.idea/modules/wear/My_Application.wear.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/wear/My_Application.wear.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/wear/My_Application.wear.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/wear/My_Application.wear.main.iml" filepath="$PROJECT_DIR$/.idea/modules/wear/My_Application.wear.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/wear/My_Application.wear.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/wear/My_Application.wear.unitTest.iml" />
     </modules>
   </component>
 </project>

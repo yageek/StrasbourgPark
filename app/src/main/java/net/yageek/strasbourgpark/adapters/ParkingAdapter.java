@@ -8,12 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import net.yageek.strasbourgpark.R;
 import net.yageek.strasbourgparkcommon.utils.ParkingStatusUtils;
 import net.yageek.strasbourgparkcommon.ParkingResult;
 import net.yageek.strasbourgparkcommon.ParkingState;
 import net.yageek.strasbourgparkcommon.adapters.ParkingBaseAdapter;
-
+import net.yageek.strasbourgpark.;
 /**
  * Created by yheinrich on 08.01.18.
  */
