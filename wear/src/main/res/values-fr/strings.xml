@@ -7,4 +7,7 @@
         <item quantity="one">%d place libre</item>
         <item quantity="other">%d places libres</item>
     </plurals>
+    <string name="retry">Réessayer</string>
+    <string name="error_message">Le serveur est injoignable</string>
+
 </resources>

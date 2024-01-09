@@ -28,10 +28,10 @@ import net.yageek.common.utils.ParkingStatusUtils;
 
 import java.util.Collections;
 import java.util.List;
+import net.yageek.strasbourgpark.wear.R;
 
 public class ParkingActivity extends WearableActivity implements ParkingRepository.Callback {
 
-    private TextView lastRefreshText;
     private View noDataLayout;
 
     private WearableRecyclerView recyclerView;
@@ -46,7 +46,6 @@ public class ParkingActivity extends WearableActivity implements ParkingReposito
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        lastRefreshText = (TextView) findViewById(R.id.last_refresh_value);
         recyclerView = (WearableRecyclerView) findViewById(R.id.parking_list);
         loadingView = findViewById(R.id.loading_view);
 
@@ -94,7 +93,6 @@ public class ParkingActivity extends WearableActivity implements ParkingReposito
         if(loading) {
             loadingView.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.INVISIBLE);
-            lastRefreshText.setVisibility(View.GONE);
             noDataLayout.setVisibility(View.INVISIBLE);
         } else {
             loadingView.setVisibility(View.INVISIBLE);
@@ -131,25 +129,21 @@ public class ParkingActivity extends WearableActivity implements ParkingReposito
         builder.create().show();
     }
 
-    private void updateContents(List<ParkingResult> result, String lastRefresh) {
+    private void updateContents(List<ParkingResult> result) {
         resultsList = result;
 
         adapter.setResults(result);
-        lastRefreshText.setText(lastRefresh);
-
         if(result.size() < 1) {
-            lastRefreshText.setVisibility(View.GONE);
             noDataLayout.setVisibility(View.VISIBLE);
         } else {
-            lastRefreshText.setVisibility(View.VISIBLE);
             noDataLayout.setVisibility(View.INVISIBLE);
         }
     }
 
     @Override
-    public void onResponse(List<ParkingResult> result, String lastRefresh) {
+    public void onResponse(List<ParkingResult> result) {
         setLoading(false);
-        updateContents(result, lastRefresh);
+        updateContents(result);
     }
 
     @Override
@@ -157,7 +151,7 @@ public class ParkingActivity extends WearableActivity implements ParkingReposito
 
         showError(t);
 
-        updateContents(Collections.<ParkingResult>emptyList(), "");
+        updateContents(Collections.<ParkingResult>emptyList());
     }
 
     public class WearParkingAdapter extends ParkingBaseAdapter<RecyclerView.ViewHolder> {
@@ -204,13 +198,13 @@ public class ParkingActivity extends WearableActivity implements ParkingReposito
 
                     pHolder.parkingName.setText(result.parking.name);
 
-                    int freePlaces = result.state.free;
+                    int freePlaces = result.state.libre;
                     Resources res = getContext().getResources();
                     String placeText = res.getQuantityString(R.plurals.free_places, freePlaces, freePlaces);
                     pHolder.parkingPlacesText.setText(placeText);
 
                     GradientDrawable drawable  = (GradientDrawable) pHolder.parkingStatusImage.getBackground();
-                    drawable.setColor(ParkingStatusUtils.colorFromStatus(getContext(), result.state.status));
+                    drawable.setColor(ParkingStatusUtils.colorFromStatus(getContext(), result.state));
                     break;
                 default:
                     break;

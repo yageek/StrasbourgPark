@@ -5,4 +5,6 @@
         <item quantity="one">%d free place</item>
         <item quantity="other">%d free places</item>
     </plurals>
+    <string name="retry">Retry</string>
+    <string name="error_message">We can not fetch the data from the server</string>
 </resources>
