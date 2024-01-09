@@ -12,26 +12,26 @@ import net.yageek.strasbourgpark.common.R;
 
 public class ParkingStatusUtils {
 
-    public static int colorFromStatus(Context context, ParkingState.Status status) {
+    public static int colorFromStatus(Context context, ParkingState status) {
 
-        switch (status) {
-            case Full: return ContextCompat.getColor(context, R.color.colorParkingFull);
-            case Open: return ContextCompat.getColor(context, R.color.colorParkingOpen);
-            case Closed: return ContextCompat.getColor(context, R.color.colorParkingClosed);
+        switch (status.etat) {
+//            case Full: return ContextCompat.getColor(context, R.color.colorParkingFull);
+            case 1: return ContextCompat.getColor(context, R.color.colorParkingOpen);
+            case 2: return ContextCompat.getColor(context, R.color.colorParkingClosed);
             default:
-            case NotAvailable: return ContextCompat.getColor(context, R.color.colorParkingNotAvailable);
+            return ContextCompat.getColor(context, R.color.colorParkingNotAvailable);
 
         }
     }
 
-    public static String textFromStatus(Context context, ParkingState.Status status) {
+    public static String textFromStatus(Context context, ParkingState status) {
 
-        switch (status) {
-            case Full: return context.getResources().getString(R.string.parking_state_full);
-            case Open: return context.getResources().getString(R.string.parking_state_open);
-            case Closed: return context.getResources().getString(R.string.parking_state_closed);
+        switch (status.etat) {
+//            case Full: return context.getResources().getString(R.string.parking_state_full);
+            case 1: return context.getResources().getString(R.string.parking_state_open);
+            case 2: return context.getResources().getString(R.string.parking_state_closed);
             default:
-            case NotAvailable: return context.getResources().getString(R.string.parking_state_notavailable);
+                return context.getResources().getString(R.string.parking_state_notavailable);
 
         }
     }

@@ -71,10 +71,10 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
 
         for(ParkingResult result: parkingModel.getDownloadStatus().getValue().results) {
 
-            if(identifier.equals(result.parking.identifier)) {
-                selectMarker(identifier);
-                break;
-            }
+//            if(identifier.equals(result.parking)) {
+//                selectMarker(identifier);
+//                break;
+//            }
         }
 
     }
@@ -172,17 +172,17 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
                 Parking parking = result.parking;
                 ParkingState state = result.state;
 
-                generator.setColor(ParkingStatusUtils.colorFromStatus(getActivity(), state.status));
-                Bitmap icon = generator.makeIcon(String.format("%d", state.free));
+                generator.setColor(ParkingStatusUtils.colorFromStatus(getActivity(), state));
+                Bitmap icon = generator.makeIcon(String.format("%d", state.libre));
 
                 MarkerOptions options = new MarkerOptions()
-                        .position(new LatLng(parking.lat, parking.lon))
+                        .position(new LatLng(parking.position.lat, parking.position.lon))
                         .icon(BitmapDescriptorFactory.fromBitmap(icon))
                         .title(parking.name);
 
                 Marker marker = map.addMarker(options);
                 marker.setTag(result);
-                markerMap.put(parking.identifier, marker);
+//                markerMap.put(parking.identifier, marker);
             }
 
         }

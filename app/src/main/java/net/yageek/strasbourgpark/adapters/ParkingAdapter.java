@@ -58,16 +58,16 @@ public class ParkingAdapter extends ParkingBaseAdapter<ParkingAdapter.ViewHolder
         if(result.state != null) {
             ParkingState state = result.state;
 
-            holder.parkingState.setTextColor(ParkingStatusUtils.colorFromStatus(getContext(), state.status));
-            holder.parkingState.setText(ParkingStatusUtils.textFromStatus(getContext(), state.status));
+            holder.parkingState.setTextColor(ParkingStatusUtils.colorFromStatus(getContext(), state));
+            holder.parkingState.setText(ParkingStatusUtils.textFromStatus(getContext(), state));
 
-            int progress = (int) ((double) state.free / (double) state.total * 100.0);
+            int progress = (int) ((double) state.libre / (double) state.total * 100.0);
 
             holder.availability.setIndeterminate(false);
             holder.availability.setProgress(progress);
 
             holder.parkingFreePlaces.setVisibility(View.VISIBLE);
-            holder.parkingFreePlaces.setText(String.format("%d", state.free));
+            holder.parkingFreePlaces.setText(String.format("%d", state.libre));
         } else {
             holder.parkingFreePlaces.setVisibility(View.INVISIBLE);
             holder.availability.setIndeterminate(true);

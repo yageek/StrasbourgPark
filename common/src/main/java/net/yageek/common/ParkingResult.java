@@ -3,18 +3,16 @@ import java.util.Comparator;
 
 
 public class ParkingResult {
-    public final String lastRefresh;
     public final Parking parking;
     public final ParkingState state;
 
-    public ParkingResult(Parking parking, ParkingState state, String lastRefresh) {
+    public ParkingResult(Parking parking, ParkingState state) {
         this.parking = parking;
         this.state = state;
-        this.lastRefresh = lastRefresh;
     }
 
     int fillingRate() {
-        return (int) ((double) state.free / (double) state.total * 100.0);
+        return (int) ((double) state.libre / (double) state.total * 100.0);
     }
 
     public enum Comparators {
@@ -32,7 +30,7 @@ public class ParkingResult {
         Comparator<ParkingResult> freePlaces = new Comparator<ParkingResult>() {
             @Override
             public int compare(ParkingResult parkingResult, ParkingResult t1) {
-                return t1.state.free - parkingResult.state.free;
+                return t1.state.libre - parkingResult.state.libre;
             }
         };
 

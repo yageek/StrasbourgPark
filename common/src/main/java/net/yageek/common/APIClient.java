@@ -16,8 +16,8 @@ public class APIClient implements Webservice {
     private Gson gson;
     private OkHttpClient client;
 
-    public static final String LocationEndpoint = "http://carto.strasmap.eu/remote.amf.json/Parking.geometry";
-    public static final String StatusEndpoint = "http://carto.strasmap.eu/remote.amf.json/Parking.status";
+    public static final String LocationEndpoint = "https://data.strasbourg.eu/api/explore/v2.1/catalog/datasets/parkings/records?&limit=100&offset=0";
+    public static final String StatusEndpoint = "https://data.strasbourg.eu/api/explore/v2.1/catalog/datasets/occupation-parkings-temps-reel/records?limit=100&offset=0";
 
     public APIClient() {
 
@@ -29,12 +29,7 @@ public class APIClient implements Webservice {
         .build();
 
         // JSON builder
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Parking.class, new Parking.JsonAdapter());
-        builder.registerTypeAdapter(ParkingLocationResponse.class, new ParkingLocationResponse.JsonAdapter());
-        builder.registerTypeAdapter(ParkingState.class, new ParkingState.JsonAdapter());
-        builder.registerTypeAdapter(ParkingStateResponse.class, new ParkingStateResponse.JsonAdapter());
-        gson = builder.create();
+        gson = new Gson();
     }
 
     private <T> T getRequest(final String url, final Type type) throws IOException {

@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "net.yageek.strasbourgpark"
-        minSdk =  14
+        minSdk =  24
         targetSdk = 33
         versionName = "1.2.0"
     }

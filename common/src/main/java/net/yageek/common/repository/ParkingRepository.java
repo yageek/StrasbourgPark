@@ -53,7 +53,7 @@ public class ParkingRepository {
                     runOnMainThread(new Runnable() {
                         @Override
                         public void run() {
-                            callback.onResponse(results, states.dataTime);
+                            callback.onResponse(results, "");
                         }
                     });
 
@@ -75,11 +75,11 @@ public class ParkingRepository {
 
         ArrayList<ParkingResult> newResults = new ArrayList<>();
 
-        for(Parking parking: locationResponse.parkings) {
-            for(ParkingState state: stateResponse.states) {
+        for(Parking parking: locationResponse.results) {
+            for(ParkingState state: stateResponse.results) {
 
-                if(parking.identifier.equals(state.parkingIdentifier)) {
-                    newResults.add(new ParkingResult(parking, state, stateResponse.dataTime));
+                if(parking.name.equals(state.nom_parking)) {
+                    newResults.add(new ParkingResult(parking, state));
                     break;
                 }
             }
