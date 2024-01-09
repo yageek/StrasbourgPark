@@ -27,8 +27,8 @@ public class ParkingModel extends ViewModel {
         downloadStatus.setValue(DownloadResult.loading());
         repository.getParkingResults(new ParkingRepository.Callback() {
             @Override
-            public void onResponse(List<ParkingResult> result, String lastRefresh) {
-                downloadStatus.setValue(DownloadResult.success(result, lastRefresh));
+            public void onResponse(List<ParkingResult> result) {
+                downloadStatus.setValue(DownloadResult.success(result));
 
             }
 

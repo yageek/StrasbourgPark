@@ -19,26 +19,24 @@ public class DownloadResult {
     public final Status status;
 
     public final List<ParkingResult> results;
-    public final String lastRefreshTime;
     public final Throwable t;
 
-    DownloadResult(Status status, List<ParkingResult> results, String lastRefreshTime, Throwable t) {
+    DownloadResult(Status status, List<ParkingResult> results, Throwable t) {
         this.status = status;
         this.results = results;
-        this.lastRefreshTime = lastRefreshTime;
         this.t = t;
     }
 
 
     public static DownloadResult error(Throwable t) {
-        return new DownloadResult(Status.Error, null, null, t);
+        return new DownloadResult(Status.Error, null, t);
     }
 
     public static DownloadResult loading() {
-        return new DownloadResult(Status.Loading, null, null, null);
+        return new DownloadResult(Status.Loading, null, null);
     }
 
-    public static DownloadResult success(List<ParkingResult> resuls, String lastRefreshTime) {
-        return new DownloadResult(Status.Success, resuls, lastRefreshTime, null);
+    public static DownloadResult success(List<ParkingResult> results) {
+        return new DownloadResult(Status.Success, results, null);
     }
 }

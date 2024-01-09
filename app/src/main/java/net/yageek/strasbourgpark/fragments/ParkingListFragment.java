@@ -36,7 +36,6 @@ public class ParkingListFragment extends Fragment implements ParkingAdapter.OnPa
     private RecyclerView recyclerView;
     private LoadingView loadingView;
     private TextView noItemTextView;
-    private TextView lastRefreshText;
 
     private ParkingModel parkingModel;
 
@@ -55,7 +54,6 @@ public class ParkingListFragment extends Fragment implements ParkingAdapter.OnPa
         recyclerView = rootView.findViewById(R.id.parking_list_view);
         loadingView = rootView.findViewById(R.id.loading_view);
         noItemTextView = rootView.findViewById(R.id.parking_list_view_no_item);
-        lastRefreshText = rootView.findViewById(R.id.parking_last_refresh_text);
 
         adapter = new ParkingAdapter(getActivity());
         recyclerView.setAdapter(adapter);
@@ -89,7 +87,6 @@ public class ParkingListFragment extends Fragment implements ParkingAdapter.OnPa
                             @Override
                             public void run() {
                                 adapter.setResults(downloadResult.results);
-                                lastRefreshText.setText(downloadResult.lastRefreshTime);
                                 setLoading(false);
                             }
                         });
@@ -167,7 +164,6 @@ public class ParkingListFragment extends Fragment implements ParkingAdapter.OnPa
             recyclerView.setVisibility(View.INVISIBLE);
             loadingView.setVisibility(View.VISIBLE);
             noItemTextView.setVisibility(View.INVISIBLE);
-            lastRefreshText.setVisibility(View.GONE);
         } else {
             recyclerView.setVisibility(View.VISIBLE);
             loadingView.setVisibility(View.INVISIBLE);
@@ -209,10 +205,8 @@ public class ParkingListFragment extends Fragment implements ParkingAdapter.OnPa
 
         if(adapter.getItemCount() < 1) {
             noItemTextView.setVisibility(View.VISIBLE);
-            lastRefreshText.setVisibility(View.GONE);
         } else {
             noItemTextView.setVisibility(View.INVISIBLE);
-            lastRefreshText.setVisibility(View.VISIBLE);
         }
     }
 

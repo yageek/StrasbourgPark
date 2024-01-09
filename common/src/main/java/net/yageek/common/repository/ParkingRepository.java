@@ -24,7 +24,7 @@ import java.util.concurrent.Executors;
 public class ParkingRepository {
 
     public interface Callback {
-        void onResponse(List<ParkingResult> result, String lastRefresh);
+        void onResponse(List<ParkingResult> result);
         void onFailure(Throwable t);
     }
 
@@ -53,7 +53,7 @@ public class ParkingRepository {
                     runOnMainThread(new Runnable() {
                         @Override
                         public void run() {
-                            callback.onResponse(results, "");
+                            callback.onResponse(results);
                         }
                     });
 
