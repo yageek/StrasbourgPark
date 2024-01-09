@@ -43,7 +43,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:exported="true"
-            android:name=".strasbourgpark.activities.ParkingListActivity"
+            android:name="net.yageek.strasbourgpark.activities.ParkingListActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
