@@ -52,7 +52,7 @@ public class ParkingListActivity extends AppCompatActivity implements ParkingAda
     public void onParkingResultSelected(ParkingResult result) {
         TabLayout.Tab tab = tabs.getTabAt(1);
         tab.select();
-//        tabsAdapter.mapFragment.selectParking(result.parking.identifier);
+        tabsAdapter.mapFragment.selectParking(result.parking.name);
     }
 
     //endregion

@@ -67,14 +67,14 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
     }
 
     //region Selection methods
-    public void selectParking(String identifier) {
+    public void selectParking(String name) {
 
         for(ParkingResult result: parkingModel.getDownloadStatus().getValue().results) {
 
-//            if(identifier.equals(result.parking)) {
-//                selectMarker(identifier);
-//                break;
-//            }
+            if(name.equals(result.parking.name)) {
+                selectMarker(name);
+                break;
+            }
         }
 
     }
@@ -182,7 +182,7 @@ public class ParkingMapFragment extends SupportMapFragment implements OnMapReady
 
                 Marker marker = map.addMarker(options);
                 marker.setTag(result);
-//                markerMap.put(parking.identifier, marker);
+                markerMap.put(parking.name, marker);
             }
 
         }

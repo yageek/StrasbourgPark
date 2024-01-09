@@ -4,11 +4,11 @@ plugins {
 
 android {
     namespace = "net.yageek.strasbourgpark.common"
-    compileSdkVersion = "android-33"
+    compileSdkVersion = "android-34"
 
     defaultConfig {
-        minSdk =  24
-        targetSdk = 33
+        minSdk =  34
+        targetSdk = 34
     }
 
     buildTypes {
