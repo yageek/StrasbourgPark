@@ -1,5 +1,7 @@
 package net.yageek.strasbourgpark.activities;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import com.google.android.material.tabs.TabLayout;
@@ -13,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import net.yageek.common.APIClient;
 import net.yageek.strasbourgpark.R;
 import net.yageek.strasbourgpark.adapters.ParkingAdapter;
 import net.yageek.strasbourgpark.fragments.ParkingListFragment;
@@ -33,6 +36,7 @@ public class ParkingListActivity extends AppCompatActivity implements ParkingAda
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        APIClient.initializeSSLContext(this);
         setContentView(R.layout.main_activity);
 
         tabsAdapter = new TabsAdapter(getSupportFragmentManager());
@@ -45,7 +49,6 @@ public class ParkingListActivity extends AppCompatActivity implements ParkingAda
         tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
 
         parkingModel = ViewModelProviders.of(this).get(ParkingModel.class);
-
     }
 
     @Override
@@ -100,8 +103,9 @@ public class ParkingListActivity extends AppCompatActivity implements ParkingAda
         inflater.inflate(R.menu.main_menu, menu);
         return true;
     }
+
     @Override
-    protected boolean onPrepareOptionsPanel(View view, Menu menu) {
+    public boolean onPreparePanel(int featureId, @Nullable View view, @NonNull Menu menu) {
 
         MenuItem refreshData = menu.findItem(R.id.refresh_data);
 

@@ -19,3 +19,14 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-dontwarn net.yageek.common.APIClient
+-dontwarn net.yageek.common.Parking
+-dontwarn net.yageek.common.ParkingResult$Comparators
+-dontwarn net.yageek.common.ParkingResult
+-dontwarn net.yageek.common.ParkingState
+-dontwarn net.yageek.common.Webservice
+-dontwarn net.yageek.common.adapters.ParkingBaseAdapter
+-dontwarn net.yageek.common.repository.ParkingRepository$Callback
+-dontwarn net.yageek.common.repository.ParkingRepository
+-dontwarn net.yageek.common.utils.ParkingStatusUtils
+-dontwarn net.yageek.common.utils.Position

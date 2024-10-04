@@ -9,7 +9,7 @@ android {
         applicationId = "net.yageek.strasbourgpark.wear"
         minSdk = 24
         targetSdk = 33
-        versionName = "1.0"
+        versionName = "1.1"
     }
     buildTypes {
         release {
@@ -26,11 +26,11 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     compileOnly("com.google.android.wearable:wearable:2.9.0")
     implementation("com.google.android.support:wearable:2.9.0")
-    implementation("com.google.android.gms:play-services-maps:18.1.0")
+    implementation("com.google.android.gms:play-services-maps:19.0.0")
     implementation("androidx.percentlayout:percentlayout:1.0.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation("androidx.recyclerview:recyclerview:1.0.0")
-    implementation("androidx.wear:wear:1.0.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("androidx.wear:wear:1.3.0")
 
     implementation(project(":common"))
 }

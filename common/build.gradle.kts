@@ -19,15 +19,17 @@ android {
             )
         }
     }
+    buildToolsVersion = "34.0.0"
 }
 
 dependencies {
+    implementation("com.google.android.gms:play-services-safetynet:18.1.0")
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation("com.squareup.okhttp3:okhttp:3.9.1")
-    implementation("com.google.code.gson:gson:2.8.2")
-    implementation("androidx.recyclerview:recyclerview:1.0.0")
-    testImplementation("junit:junit:4.12")
-    androidTestImplementation("androidx.test.ext:junit:1.1.1")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.1.0")
 }
 

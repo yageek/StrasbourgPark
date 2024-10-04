@@ -8,6 +8,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
+import net.yageek.common.APIClient;
+
 /**
  * Created by yheinrich on 21.01.18.
  */
@@ -19,8 +21,9 @@ public class MapActivity extends WearableActivity implements OnMapReadyCallback 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.map_layout);
 
+        APIClient.initializeSSLContext(this);
+        setContentView(R.layout.map_layout);
 
         mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);

@@ -5,14 +5,14 @@ plugins {
 
 android {
     namespace = "net.yageek.strasbourgpark"
-    compileSdkVersion = "android-34"
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "net.yageek.strasbourgpark"
         minSdk = 24
         targetSdk = 34
-        versionName = "1.2.0"
-        versionCode = 3
+        versionName = "1.4.0"
+        versionCode = 6
     }
 
     buildTypes {
@@ -24,27 +24,28 @@ android {
             )
         }
     }
+    buildToolsVersion = "34.0.0"
 }
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation("androidx.appcompat:appcompat:1.0.0")
-    implementation("androidx.constraintlayout:constraintlayout:1.1.3")
-    implementation("com.google.android.gms:play-services-maps:18.2.0")
-    implementation("com.google.android.material:material:1.0.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("com.google.android.gms:play-services-maps:19.0.0")
+    implementation("com.google.android.material:material:1.12.0")
 
     // Api
     implementation(project(":common"))
     // ViewModel and LiveData
-    implementation("androidx.lifecycle:lifecycle-extensions:2.0.0")
-    annotationProcessor("androidx.lifecycle:lifecycle-compiler:2.0.0")
+    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
+    annotationProcessor("androidx.lifecycle:lifecycle-common:2.8.6")
 
     // Map Utils
-    implementation("com.google.maps.android:android-maps-utils:0.4+")
+    implementation("com.google.maps.android:android-maps-utils:0.4.4")
 
     testImplementation("junit:junit:4.12")
-    androidTestImplementation("androidx.test.ext:junit:1.1.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.1.0")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
 }
 
